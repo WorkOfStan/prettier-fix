@@ -1,0 +1,57 @@
+name: Prettier-fix
+on: [pull_request, push]
+
+permissions:
+  contents: write
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Init package.json if it doesn't exist
+        run: |
+          if [ ! -f package.json ]; then
+            npm init -y
+          fi
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Prettier and fix
+        run: npx prettier --write .
+
+      - name: Add changes
+        run: git add .
+
+      - name: Check for diffs in .github/workflows/*.yml file - to be fixed manually
+        run: |
+          for file in .github/workflows/*.yml; do
+            if git diff --staged "$file" | grep -q .; then
+              echo "::warning file=$file::Changes detected in $file. Manual intervention required to avoid conflicts with Super-Linter."
+              git diff --staged "$file"
+            fi
+          done    
+
+      - name: Create new branch
+        run: |
+          git checkout -b prettier/fix-${{ github.run_number }}
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit changes without including .github/workflows
+        run: |
+          git reset .github/workflows/*.yml
+          git commit -m "Prettier fixes applied automatically on $(date +"%Y-%m-%d %H:%M:%S")"
+
+      - name: Push changes to new branch
+        run: git push origin prettier/fix-${{ github.run_number }}
