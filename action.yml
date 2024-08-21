@@ -48,14 +48,13 @@ jobs:
         run: |
           TIMESTAMP=$(date +'%y%m%d%H%M%S')
           SHORT_HASH=$(git rev-parse --short HEAD)
-          BRANCH_NAME="prettier/fix-${TIMESTAMP}-${SHORT_HASH}"
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-        shell: bash
+          echo "BRANCH_NAME=prettier/fix-${TIMESTAMP}-${SHORT_HASH}" >> $GITHUB_ENV
+          echo "::set-output name=branch_name::prettier/fix-${TIMESTAMP}-${SHORT_HASH}"
 
       - name: Create new branch
         run: |
-          git checkout -b ${{ env.BRANCH_NAME }}
-          echo "New branch created: ${{ env.BRANCH_NAME }}"
+          git checkout -b ${{ steps.set-branch-name.outputs.branch_name }}
+          echo "New branch created: ${{ steps.set-branch-name.outputs.branch_name }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
@@ -65,4 +64,4 @@ jobs:
           git commit -m "Prettier fixes applied automatically on $(date +"%Y-%m-%d %H:%M:%S")"
 
       - name: Push changes to new branch
-        run: git push origin ${{ env.BRANCH_NAME }}
+        run: git push origin ${{ steps.set-branch-name.outputs.branch_name }}
