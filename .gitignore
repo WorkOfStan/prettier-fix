@@ -1,0 +1,7 @@
+#disable dependency files
+/package-lock.json
+
+#disable IDE files
+/nbproject/
+/.idea/
+

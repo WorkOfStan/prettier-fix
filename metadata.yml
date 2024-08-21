@@ -1,0 +1,32 @@
+---
+name: "Prettier Fix for Super-Linter"
+description: "Automatically apply Prettier formatting and create a pull request to fix code style issues, ensuring compatibility with Super-Linter."
+longDescription: |
+  This GitHub Action applies Prettier formatting to your code and pushes the changes to a new branch. The action helps ensure that your code passes the Super-Linter checks by fixing any style issues using vanilla Prettier.
+  
+  It also checks for any changes made to the `.github/workflows` directory and issues a warning if changes are detected, advising you to manually review and fix these to avoid conflicts with Super-Linter.
+
+  The action automatically creates a new branch for the changes, making it easy to review and merge the fixes into your main branch. This action is particularly useful for teams looking to maintain consistent code style and avoid linting errors without manually running Prettier.
+
+categories:
+  - "Code Quality"
+  - "Continuous Integration"
+  - "Utilities"
+
+tags:
+  - "prettier"
+  - "code formatting"
+  - "super-linter"
+  - "automation"
+  - "continuous integration"
+
+author:
+  name: "Stanislav Rejthar"
+  email: "rejthar@stanislavrejthar.com"
+  url: "https://github.com/WorkOfStan"
+
+image: ".github/images/social-preview.png"
+
+license: "MIT"
+
+latestRelease: "v1.0.0"
