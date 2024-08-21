@@ -1,5 +1,4 @@
 #disable dependency files
-/package.json
 /package-lock.json
 
 #disable IDE files

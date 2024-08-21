@@ -19,19 +19,26 @@ runs:
         with:
           node-version: ${{ inputs.node-version }}
 
-      - name: Init package.json if it doesn't exist
+      - name: Handle package.json, Install dependencies, Run Prettier, and Clean up
         run: |
+          CREATED_PACKAGE_JSON=false
           if [ ! -f package.json ]; then
             npm init -y
+            echo "package.json created"
+            CREATED_PACKAGE_JSON=true
           fi
-        shell: bash
 
-      - name: Install dependencies
-        run: npm install
-        shell: bash
+          # Install dependencies
+          npm install
 
-      - name: Run Prettier and fix
-        run: npx prettier --write .
+          # Run Prettier and fix
+          npx prettier --write .
+
+          # Remove package.json if it was created in this run
+          if [ "$CREATED_PACKAGE_JSON" = true ]; then
+            rm -f package.json package-lock.json
+            echo "package.json and package-lock.json removed"
+          fi
         shell: bash
 
       - name: Add changes
@@ -57,7 +64,6 @@ runs:
           echo "New branch created: $BRANCH_NAME"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          #git add .
           # Commit changes without including .github/workflows
           git reset .github/workflows/*.yml
           git commit -m "Prettier fixes applied automatically on $(date +"%Y-%m-%d %H:%M:%S")"

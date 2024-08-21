@@ -4,7 +4,7 @@ With the release of Super-Linter 7.0.0, Prettier has become the standard for man
 
 ### How to Use It
 
-To automate Prettier, simply add the provided YAML configuration to your repository. When you create a branch with a name starting with `prettier/`, this action automatically runs Prettier to format your code.
+To automate Prettier, simply add [the provided YAML configuration](.github/workflows/prettier-fix.yml) to your repository. If needed, a new branch with a name starting with `prettier/` will be created, making it easy to review and merge the fixes into your main branch.
 
 ### Important Note for Workflow YAMLs
 
