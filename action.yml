@@ -1,16 +1,15 @@
-name: Prettier-fix
-on: [pull_request, push]
+name: "Prettier Fix"
+description: "A GitHub action to apply Prettier fixes"
 
-permissions:
-  contents: write
+inputs:
+  node-version:
+    description: "Node.js version to use"
+    required: true
+    default: "20"
 
-jobs:
-  prettier:
-    runs-on: ubuntu-latest
-    # Limit the running time
-    timeout-minutes: 10
-
-    steps:
+runs:
+  using: "composite"
+  steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
