@@ -6,6 +6,13 @@ permissions:
   contents: write
 
 jobs:
-  call-workflow:
-    uses: WorkOfStan/prettier-fix/action.yml@WorkOfStan-patch-1
+  prettier-fix:
+    runs-on: ubuntu-latest
+    # Limit the running time
+    timeout-minutes: 10
+    steps:
+      #- name: Checkout
+      #  uses: actions/checkout@v4
 
+      - name: Invoke the prettier fix
+        uses: WorkOfStan/prettier-fix@WorkOfStan-patch-1
