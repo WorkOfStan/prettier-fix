@@ -11,7 +11,7 @@ jobs:
     # Limit the running time
     timeout-minutes: 10
     steps:
-      - name: Invoke the prettier fix
-        uses: WorkOfStan/prettier-fix@WorkOfStan-patch-1
+      - name: Invoke the Prettier fix
+        uses: WorkOfStan/prettier-fix@v1.0.0
         #with:
         #  node-version: "20"
