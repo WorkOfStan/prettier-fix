@@ -1,3 +1,4 @@
+---
 name: "Prettier Fix"
 description: "A GitHub action to apply Prettier fixes"
 
@@ -16,7 +17,7 @@ runs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: ${{ inputs.node-version }}
 
       - name: Init package.json if it doesn't exist
         run: |
@@ -63,4 +64,3 @@ runs:
           # Push changes to new branch
           git push origin $BRANCH_NAME
         shell: bash
-        

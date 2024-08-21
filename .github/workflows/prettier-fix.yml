@@ -3,7 +3,7 @@ name: Prettier-fix
 on: [pull_request, push]
 
 permissions:
-  contents: write
+    contents: write
 
 jobs:
   prettier-fix:
@@ -11,8 +11,7 @@ jobs:
     # Limit the running time
     timeout-minutes: 10
     steps:
-      #- name: Checkout
-      #  uses: actions/checkout@v4
-
       - name: Invoke the prettier fix
         uses: WorkOfStan/prettier-fix@WorkOfStan-patch-1
+        #with:
+        #  node-version: "20"

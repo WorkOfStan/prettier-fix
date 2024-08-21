@@ -1,3 +1,4 @@
+---
 name: "Prettier Fix for Super-Linter"
 description: "Automatically apply Prettier formatting and create a pull request to fix code style issues, ensuring compatibility with Super-Linter."
 longDescription: |
