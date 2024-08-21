@@ -43,25 +43,18 @@ jobs:
             fi
           done    
 
-      - name: Set branch name
-        id: set-branch-name
+      - name: Set branch name and create branch
         run: |
           TIMESTAMP=$(date +'%y%m%d%H%M%S')
           SHORT_HASH=$(git rev-parse --short HEAD)
-          echo "BRANCH_NAME=prettier/fix-${TIMESTAMP}-${SHORT_HASH}" >> $GITHUB_ENV
-          echo "::set-output name=branch_name::prettier/fix-${TIMESTAMP}-${SHORT_HASH}"
-
-      - name: Create new branch
-        run: |
-          git checkout -b ${{ steps.set-branch-name.outputs.branch_name }}
-          echo "New branch created: ${{ steps.set-branch-name.outputs.branch_name }}"
+          BRANCH_NAME="prettier/fix-${TIMESTAMP}-${SHORT_HASH}"
+          git checkout -b $BRANCH_NAME
+          echo "New branch created: $BRANCH_NAME"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Commit changes without including .github/workflows
-        run: |
+          #git add .
+          # Commit changes without including .github/workflows
           git reset .github/workflows/*.yml
           git commit -m "Prettier fixes applied automatically on $(date +"%Y-%m-%d %H:%M:%S")"
-
-      - name: Push changes to new branch
-        run: git push origin ${{ steps.set-branch-name.outputs.branch_name }}
+          # Push changes to new branch
+          git push origin $BRANCH_NAME
