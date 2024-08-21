@@ -1,0 +1,11 @@
+---
+name: Prettier-fix
+on: [pull_request, push]
+
+permissions:
+  contents: write
+
+jobs:
+  call-workflow:
+    uses: WorkOfStan/prettier-fix/action.yml@WorkOfStan-patch-1
+
