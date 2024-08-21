@@ -76,3 +76,7 @@ runs:
         # Push changes to new branch
         git push origin $BRANCH_NAME
       shell: bash
+
+branding:
+  icon: 'check-circle'
+  color: 'blue'
