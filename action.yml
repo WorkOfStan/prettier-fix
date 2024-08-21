@@ -35,7 +35,7 @@ runs:
           npx prettier --write .
 
           # Remove package.json if it was created in this run
-          if [ "$CREATED_PACKAGE_JSON" = true ]; then
+          if [ "$CREATED_PACKAGE_JSON" = "true" ]; then
             rm -f package.json package-lock.json
             echo "package.json and package-lock.json removed"
           fi
@@ -46,25 +46,21 @@ runs:
           if [ -z "$(git status --porcelain)" ]; then
             echo "No changes detected by Prettier. Exiting gracefully."
             exit 0
+            # The rest of the script must be within the same step to really stop the execution
           fi
-        shell: bash
 
-      - name: Add changes
-        run: git add .
-        shell: bash
+          # Add changes
+          git add .
 
-      - name: Check for diffs in .github/workflows/*.yml file - to be fixed manually
-        run: |
+          # Check for diffs in .github/workflows/*.yml file - to be fixed manually
           for file in .github/workflows/*.yml; do
             if git diff --staged "$file" | grep -q .; then
               echo "::warning file=$file::Changes detected in $file. Manual intervention required to avoid conflicts with Super-Linter."
               git diff --staged "$file"
             fi
           done    
-        shell: bash
 
-      - name: Set branch name and create branch
-        run: |
+          # Set branch name and create branch
           TIMESTAMP=$(date +'%y%m%d%H%M%S')
           SHORT_HASH=$(git rev-parse --short HEAD)
           BRANCH_NAME="prettier/fix-${TIMESTAMP}-${SHORT_HASH}"
