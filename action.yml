@@ -23,15 +23,19 @@ runs:
           if [ ! -f package.json ]; then
             npm init -y
           fi
+        shell: bash
 
       - name: Install dependencies
         run: npm install
+        shell: bash
 
       - name: Run Prettier and fix
         run: npx prettier --write .
+        shell: bash
 
       - name: Add changes
         run: git add .
+        shell: bash
 
       - name: Check for diffs in .github/workflows/*.yml file - to be fixed manually
         run: |
@@ -41,6 +45,7 @@ runs:
               git diff --staged "$file"
             fi
           done    
+        shell: bash
 
       - name: Set branch name and create branch
         run: |
@@ -57,3 +62,5 @@ runs:
           git commit -m "Prettier fixes applied automatically on $(date +"%Y-%m-%d %H:%M:%S")"
           # Push changes to new branch
           git push origin $BRANCH_NAME
+        shell: bash
+        
