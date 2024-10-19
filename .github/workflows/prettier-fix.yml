@@ -12,6 +12,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Invoke the Prettier fix
-        uses: WorkOfStan/prettier-fix@prettier/fix-240821201011-0bfacfd
+        # Use the latest minor and patch updates under the major version v1.
+        uses: WorkOfStan/prettier-fix@v1
         #with:
         #  node-version: "20"
