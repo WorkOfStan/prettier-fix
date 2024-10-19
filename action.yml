@@ -78,7 +78,9 @@ runs:
         BRANCH_NAME="prettier/fix-${TIMESTAMP}-${SHORT_HASH}"
         git checkout -b $BRANCH_NAME
         echo "New branch created: $BRANCH_NAME"
-        echo "::warning branch=$BRANCH_NAME::New branch created: $branch. Consider pull request."
+        #echo "::warning branch=$BRANCH_NAME::New branch created: $BRANCH_NAME. Consider pull request."
+        echo "::warning title=New branch created,branch=$BRANCH_NAME::New branch created: $BRANCH_NAME | $branch . Consider pull request."
+        echo "::warning title=New branch created::Consider pull request for a new branch: $BRANCH_NAME (or delete it)"
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
 

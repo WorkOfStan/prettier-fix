@@ -6,6 +6,10 @@ With the release of [Super-Linter](https://github.com/super-linter/super-linter)
 
 To automate Prettier, simply add [the provided YAML configuration](.github/workflows/prettier-fix.yml) to your repository. If needed, a new branch with a name starting with `prettier/` will be created, making it easy to review and merge the fixes into your main branch.
 
+Note: This action is not blocking, so the status remains green even if changes are proposed in the form of a new branch. It’s up to you to either create a pull request to merge the changes or delete the branch.
+
 ### Important Note for Workflow YAMLs
 
-If the changes involve files within the `.github/workflows/` directory, these need to be updated manually. So, it also checks for any changes made to the `.github/workflows` directory and issues a warning if changes are detected, advising you to manually review and fix these to avoid conflicts with Super-Linter. After making the necessary adjustments, simply create a pull request to finalize the changes and keep your repository in top shape.
+If the changes involve files within the `.github/workflows/` directory, these cannot be done automatically and need to be updated manually.
+So, it also checks for any changes made to the `.github/workflows` directory and issues a warning if changes are detected, advising you to manually review and fix these to avoid conflicts with Super-Linter.
+After making the necessary adjustments, simply create a pull request to finalize the changes and keep your repository in top shape.
