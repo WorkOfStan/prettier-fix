@@ -67,7 +67,7 @@ runs:
         # Check for diffs in .github/workflows/*.yml file - to be fixed manually
         for file in .github/workflows/*.yml; do
           if git diff --staged "$file" | grep -q .; then
-            echo "::warning file=$file::Changes detected in $file. Manual intervention required to avoid conflicts with Super-Linter."
+            echo "::warning title=Manual change required::Changes detected in $file. Manual intervention required to avoid conflicts with Super-Linter."
             git diff --staged "$file"
           fi
         done    
@@ -77,9 +77,6 @@ runs:
         SHORT_HASH=$(git rev-parse --short HEAD)
         BRANCH_NAME="prettier/fix-${TIMESTAMP}-${SHORT_HASH}"
         git checkout -b $BRANCH_NAME
-        echo "New branch created: $BRANCH_NAME"
-        #echo "::warning branch=$BRANCH_NAME::New branch created: $BRANCH_NAME. Consider pull request."
-        echo "::warning title=New branch created,branch=$BRANCH_NAME::New branch created: $BRANCH_NAME | $branch . Consider pull request."
         echo "::warning title=New branch created::Consider pull request for a new branch: $BRANCH_NAME (or delete it)"
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
