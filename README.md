@@ -1,6 +1,6 @@
 # Prettier-Fix
 
-With the release of Super-Linter 7.0.0, Prettier has become the standard for many file formats, ensuring consistent code styling across your projects. Embrace this change and keep your codebase looking sharp by integrating Prettier directly into your workflow. While you can still rely on your favorite IDE to apply Prettier's formatting, why not automate the process with this GitHub Action?
+With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects. Embrace this change and keep your codebase looking sharp by integrating Prettier directly into your workflow. While you can still rely on your favorite IDE to apply Prettier's formatting, why not automate the process with this GitHub Action using vanilla Prettier?
 
 ### How to Use It
 
@@ -8,4 +8,4 @@ To automate Prettier, simply add [the provided YAML configuration](.github/workf
 
 ### Important Note for Workflow YAMLs
 
-If the changes involve files within the `.github/workflows/` directory, these need to be updated manually. After making the necessary adjustments, simply create a pull request to finalize the changes and keep your repository in top shape.
+If the changes involve files within the `.github/workflows/` directory, these need to be updated manually. So, it also checks for any changes made to the `.github/workflows` directory and issues a warning if changes are detected, advising you to manually review and fix these to avoid conflicts with Super-Linter. After making the necessary adjustments, simply create a pull request to finalize the changes and keep your repository in top shape.
