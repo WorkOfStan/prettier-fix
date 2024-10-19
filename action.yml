@@ -1,8 +1,6 @@
 ---
 name: "Prettier Fix"
-description: |
-  Automatically apply Prettier formatting and create a pull request to fix code style issues, ensuring compatibility with Super-Linter.
-  Licensed under the [MIT License](LICENSE).
+description: Automatically format code using Prettier and open pull requests to fix style issues for Super-Linter compatibility.
 
 author:
   name: "Stanislav Rejthar"
@@ -10,8 +8,7 @@ author:
   url: "https://github.com/WorkOfStan"
 
 branding:
-  #icon: "check-circle"
-  icon: ".github/images/social-preview.png"
+  icon: "check-circle"
   color: "blue"
 
 inputs:

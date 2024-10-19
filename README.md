@@ -2,6 +2,10 @@
 
 With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects. Embrace this change and keep your codebase looking sharp by integrating Prettier directly into your workflow. While you can still rely on your favorite IDE to apply Prettier's formatting, why not automate the process with this GitHub Action using vanilla Prettier?
 
+<p align="center">
+  <img src=".github/images/social-preview.png" width="128" alt="accessibility text">
+</p>
+
 ### How to Use It
 
 To automate Prettier, simply add [the provided YAML configuration](.github/workflows/prettier-fix.yml) to your repository. If needed, a new branch with a name starting with `prettier/` will be created, making it easy to review and merge the fixes into your main branch.
