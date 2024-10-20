@@ -67,7 +67,14 @@ runs:
             echo "::warning title=Manual change required::Changes detected in $file. Manual intervention required to avoid conflicts with Super-Linter."
             git diff --staged "$file"
           fi
-        done    
+        done
+
+        # Re-check after uneditable files reset
+        if [ -z "$(git status --porcelain)" ]; then
+          echo "No editable changes detected by Prettier. Exiting gracefully."
+          exit 0
+          # The rest of the script must be within the same step to really stop the execution
+        fi
 
         # Set branch name and create branch
         TIMESTAMP=$(date +'%y%m%d%H%M%S')
