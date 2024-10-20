@@ -66,6 +66,7 @@ runs:
           if git diff --staged "$file" | grep -q .; then
             echo "::warning title=Manual change required::Changes detected in $file. Manual intervention required to avoid conflicts with Super-Linter."
             git diff --staged "$file"
+            git reset "$file"
           fi
         done
 
@@ -85,8 +86,7 @@ runs:
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
 
-        # Commit changes without including .github/workflows
-        git reset .github/workflows/*.yml
+        # Commit changes without including .github/workflows/*.yml that were reset above
         git commit -m "Prettier fixes applied automatically on $(date +"%Y-%m-%d %H:%M:%S")"
 
         # Push changes to new branch
