@@ -66,7 +66,10 @@ runs:
           if git diff --staged "$file" | grep -q .; then
             echo "::warning title=Manual change required::Changes detected in $file. Manual intervention required to avoid conflicts with Super-Linter."
             git diff --staged "$file"
+            # Unstage the changes git restore --staged "$file" or:
             git reset "$file"
+            # Discard changes in the working directory, so that it doesn't trigger status --porcelain
+            git restore "$file"             
           fi
         done
 
