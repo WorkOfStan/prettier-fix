@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- If only changes are in .github/workflows/*.yml , then the action still should gracefully exit 0.
+- If only changes are in .github/workflows/\*.yml , then the action still should gracefully exit 0.
 
 ## [1.0.1] - 2024-10-20
 
