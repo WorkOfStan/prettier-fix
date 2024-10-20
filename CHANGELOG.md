@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Reset changes in .github/workflows/\*.yml before checking other changes, so that the action still should gracefully exit 0.
+- Revert changes in .github/workflows/\*.yml before checking other changes, so when only non-editable files should be changed, no new branch is created and the action still gracefully exit 0.
 
 ## [1.0.2] - 2024-10-20
 
