@@ -19,6 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [1.0.3] - 2024-10-20
+
+### Fixed
+
+- Reset changes in .github/workflows/\*.yml before checking other changes, so that the action still should gracefully exit 0.
+
 ## [1.0.2] - 2024-10-20
 
 ### Fixed
@@ -36,7 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - This GitHub Action automates Prettier formatting across your project, ensuring consistent code styling by creating a new branch for review when necessary. It simplifies integrating Prettier into your workflow, although updates to workflow YAML files in `.github/workflows/` must be done manually.
 
-[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/WorkOfStan/prettier-fix/compare/v1.0.2...v1.0.3?w=1
 [1.0.2]: https://github.com/WorkOfStan/prettier-fix/compare/v1.0.1...v1.0.2?w=1
 [1.0.1]: https://github.com/WorkOfStan/prettier-fix/compare/v1.0.0...v1.0.1?w=1
 [1.0.0]: https://github.com/WorkOfStan/prettier-fix/releases/tag/v1.0.0
