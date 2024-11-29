@@ -27,7 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Customizable Commit Message**: Introduced an input `commit-message` to allow users to specify a custom commit message.
 - **Branch Name Output**: The `branch-name` is now provided as an output for downstream workflows.
 - **Prettier Installation Check**: Ensures `Prettier` is installed and available even if `skip-package-setup` is true.
-- Added detailed logging to improve the visibility of action progress and conditional steps.
 
 ### Changed
 

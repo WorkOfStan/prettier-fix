@@ -52,7 +52,7 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
 
-    - name: Install dependencies if needed
+    - name: Handle package.json, Install dependencies, Run Prettier, and Clean up
       run: |
         CREATED_PACKAGE_JSON=false
         #debug
@@ -81,24 +81,15 @@ runs:
         fi
         echo "$CREATED_PACKAGE_JSON in IDIN"
         #/debug
-      shell: bash
 
-    - name: Check and Install Prettier if Missing
-      run: |
         if ! npx prettier -v > /dev/null 2>&1; then
           echo "Prettier not found. Installing temporarily..."
           npm install prettier
         fi
-      shell: bash
 
-    - name: Run Prettier
-      run: |
         echo "Running Prettier..."
         npx prettier --write .
-      shell: bash
 
-    - name: Cleanup Temporary Files
-      run: |
         echo "$CREATED_PACKAGE_JSON in CTF"
         if [ "$CREATED_PACKAGE_JSON" == "true" ]; then
           echo "Cleaning up temporary files..."
@@ -113,6 +104,7 @@ runs:
           echo "package.json JE"
         fi
         #/debug
+        # Keep in the same step to hold the context for $CREATED_PACKAGE_JSON
       shell: bash
 
     - name: Commit and Push Changes if Any
