@@ -54,12 +54,14 @@ runs:
 
     - name: Install dependencies if needed
       run: |
+        CREATED_PACKAGE_JSON=false
         if [ "${{ inputs.skip-package-setup }}" != "true" ]; then
-          echo "Setting up package.json and installing dependencies..."
           if [ ! -f package.json ]; then
+            echo "Setting up package.json..."
             npm init -y
             CREATED_PACKAGE_JSON=true
           fi
+          echo "... and installing dependencies..."
           npm install
         fi
       shell: bash
