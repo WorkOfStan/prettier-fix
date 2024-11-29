@@ -79,6 +79,7 @@ runs:
         if [ -f package.json ]; then
           echo "package.json JE"
         fi
+        echo "$CREATED_PACKAGE_JSON in IDIN"
         #/debug
       shell: bash
 
@@ -98,6 +99,7 @@ runs:
 
     - name: Cleanup Temporary Files
       run: |
+        echo "$CREATED_PACKAGE_JSON in CTF"
         if [ "$CREATED_PACKAGE_JSON" == "true" ]; then
           echo "Cleaning up temporary files..."
           rm -f package.json package-lock.json
