@@ -55,6 +55,14 @@ runs:
     - name: Install dependencies if needed
       run: |
         CREATED_PACKAGE_JSON=false
+        #debug
+        if [ ! -f package.json ]; then
+          echo "package.json NENI"
+        fi
+        if [ -f package.json ]; then
+          echo "package.json JE"
+        fi
+        #/debug
         if [ "${{ inputs.skip-package-setup }}" != "true" ]; then
           if [ ! -f package.json ]; then
             echo "Setting up package.json..."
@@ -64,6 +72,14 @@ runs:
           echo "... and installing dependencies..."
           npm install
         fi
+        #debug
+        if [ ! -f package.json ]; then
+          echo "package.json NENI"
+        fi
+        if [ -f package.json ]; then
+          echo "package.json JE"
+        fi
+        #/debug
       shell: bash
 
     - name: Check and Install Prettier if Missing
@@ -94,6 +110,7 @@ runs:
         if [ -f package.json ]; then
           echo "package.json JE"
         fi
+        #/debug
       shell: bash
 
     - name: Commit and Push Changes if Any
