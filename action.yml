@@ -80,7 +80,7 @@ runs:
 
     - name: Cleanup Temporary Files
       run: |
-        if [ "${{ inputs.skip-package-setup }}" == "true" ] && [ "$CREATED_PACKAGE_JSON" == "true" ]; then
+        if [ "$CREATED_PACKAGE_JSON" == "true" ]; then
           echo "Cleaning up temporary files..."
           rm -f package.json package-lock.json
           rm -rf node_modules
