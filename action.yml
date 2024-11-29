@@ -55,14 +55,6 @@ runs:
     - name: Handle package.json, Install dependencies, Run Prettier, and Clean up
       run: |
         CREATED_PACKAGE_JSON=false
-        #debug
-        if [ ! -f package.json ]; then
-          echo "package.json NENI"
-        fi
-        if [ -f package.json ]; then
-          echo "package.json JE"
-        fi
-        #/debug
         if [ "${{ inputs.skip-package-setup }}" != "true" ]; then
           if [ ! -f package.json ]; then
             echo "Setting up package.json..."
@@ -72,15 +64,6 @@ runs:
           echo "... and installing dependencies..."
           npm install
         fi
-        #debug
-        if [ ! -f package.json ]; then
-          echo "package.json NENI"
-        fi
-        if [ -f package.json ]; then
-          echo "package.json JE"
-        fi
-        echo "$CREATED_PACKAGE_JSON in IDIN"
-        #/debug
 
         if ! npx prettier -v > /dev/null 2>&1; then
           echo "Prettier not found. Installing temporarily..."
@@ -90,20 +73,11 @@ runs:
         echo "Running Prettier..."
         npx prettier --write .
 
-        echo "$CREATED_PACKAGE_JSON in CTF"
         if [ "$CREATED_PACKAGE_JSON" == "true" ]; then
           echo "Cleaning up temporary files..."
           rm -f package.json package-lock.json
           rm -rf node_modules
         fi
-        #debug
-        if [ ! -f package.json ]; then
-          echo "package.json NENI"
-        fi
-        if [ -f package.json ]; then
-          echo "package.json JE"
-        fi
-        #/debug
         # Keep in the same step to hold the context for $CREATED_PACKAGE_JSON
       shell: bash
 
