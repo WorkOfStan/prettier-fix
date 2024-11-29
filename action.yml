@@ -87,6 +87,13 @@ runs:
           rm -f package.json package-lock.json
           rm -rf node_modules
         fi
+        #debug
+        if [ ! -f package.json ]; then
+          echo "package.json NENI"
+        fi
+        if [ -f package.json ]; then
+          echo "package.json JE"
+        fi
       shell: bash
 
     - name: Commit and Push Changes if Any
