@@ -9,7 +9,7 @@ With the release of [Super-Linter](https://github.com/super-linter/super-linter)
 ## Features
 
 - Automatically formats code using Prettier.
-- Creates a new branch (prefixed with `prettier/`) if changes are required, making it easy to review and merge.
+- Creates a new branch (prefixed with `prettier/fix`) if changes are required, making it easy to review and merge. Or you can set the input parameter `commit-changes: true` to commit to the current branch.
 - Allows for customizable commit messages via the `commit-message` input.
 - Provides the branch name as an output for downstream workflows.
 - Issues warnings for manual changes needed in `.github/workflows` files.
@@ -17,10 +17,10 @@ With the release of [Super-Linter](https://github.com/super-linter/super-linter)
 ## How to Use It
 
 To automate Prettier, simply add [the provided YAML configuration](.github/workflows/prettier-fix.yml) to your repository.
-If needed, by default, a new branch with a name starting with `prettier/` will be created, making it easy to review and merge the fixes into your main branch.
-You can however set the input parameter `commit-changes: true` to commit to the current branch.
 
-Note: This action is not blocking, so the status remains green even if changes are proposed in the form of a new branch. It’s up to you to either create a pull request to merge the changes or delete the branch.
+By default, if needed, a new branch with a name starting with `prettier/fix` will be created, making it easy to review and merge the fixes into your main branch.
+
+Note: This action is not blocking, so the status remains green even if changes are proposed in the form of a new branch. Then it’s up to you to either create a pull request to merge the changes or delete the branch.
 
 ### Inputs
 
