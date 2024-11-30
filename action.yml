@@ -20,14 +20,6 @@ inputs:
     description: "If true, commit changes to the current branch"
     type: boolean
     default: false
-  git-user-name:
-    description: "Git user name for commits"
-    type: string
-    default: "github-actions[bot]"
-  git-user-email:
-    description: "Git user email for commits"
-    type: string
-    default: "github-actions[bot]@users.noreply.github.com"
   skip-package-setup:
     description: "If true, skip npm initialization and installation"
     type: boolean
@@ -119,8 +111,8 @@ runs:
         fi
 
         # Configure Git user
-        git config user.name "${{ inputs.git-user-name }}"
-        git config user.email "${{ inputs.git-user-email }}"
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
         # Commit and push changes with custom message
         git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S')"
