@@ -20,14 +20,6 @@ inputs:
     description: "If true, commit changes to the current branch"
     type: boolean
     default: false
-  git-user-name:
-    description: "Git user name for commits"
-    type: string
-    default: "github-actions[bot]"
-  git-user-email:
-    description: "Git user email for commits"
-    type: string
-    default: "github-actions[bot]@users.noreply.github.com"
   skip-package-setup:
     description: "If true, skip npm initialization and installation"
     type: boolean
@@ -107,13 +99,6 @@ runs:
           exit 0
           # The rest of the script must still be within the same step to really stop the execution
         fi
-
-        # Configure Git user
-        git config --local user.name "${{ inputs.git-user-name }}"
-        git config --local user.email "${{ inputs.git-user-email }}"
-        # Debugging: Verify the configuration
-        echo "Git user name: $(git config --get user.name)"
-        echo "Git user email: $(git config --get user.email)"
 
         # Determine branch name based on commit-changes input
         if ${{ inputs.commit-changes }}; then
