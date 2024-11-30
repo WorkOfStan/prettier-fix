@@ -28,6 +28,8 @@ Note: This action is not blocking, so the status remains green even if changes a
 | -------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------ |
 | `node-version`       | Node.js version to use                                                         | `"20"`                                           |
 | `commit-changes`     | If `true`, commits changes to the current branch instead of creating a new one | `false`                                          |
+| `git-user-name`      | Git user name for commits                                                      | `"github-actions[bot]"`                          |
+| `git-user-email`     | Git user email for commits                                                     | `"github-actions[bot]@users.noreply.github.com"` |
 | `skip-package-setup` | If `true`, skips `npm init` and dependency installation steps                  | `false`                                          |
 | `commit-message`     | Commit message for the changes                                                 | `"Prettier fixes applied automatically"`         |
 

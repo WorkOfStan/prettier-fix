@@ -20,6 +20,14 @@ inputs:
     description: "If true, commit changes to the current branch"
     type: boolean
     default: false
+  git-user-name:
+    description: "Git user name for commits"
+    type: string
+    default: "github-actions[bot]"
+  git-user-email:
+    description: "Git user email for commits"
+    type: string
+    default: "github-actions[bot]@users.noreply.github.com"
   skip-package-setup:
     description: "If true, skip npm initialization and installation"
     type: boolean
@@ -109,6 +117,10 @@ runs:
           git checkout -b "$BRANCH_NAME"
           echo "::warning title=New branch created::Consider pull request for a new branch: $BRANCH_NAME (or delete it)"
         fi
+
+        # Configure Git user
+        git config user.name "${{ inputs.git-user-name }}"
+        git config user.email "${{ inputs.git-user-email }}"
 
         # Commit and push changes with custom message
         git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S')"
