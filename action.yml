@@ -14,8 +14,24 @@ branding:
 inputs:
   node-version:
     description: "Node.js version to use"
-    required: true
+    type: string
     default: "20"
+  commit-changes:
+    description: "If true, commit changes to the current branch"
+    type: boolean
+    default: false
+  skip-package-setup:
+    description: "If true, skip npm initialization and installation"
+    type: boolean
+    default: false
+  commit-message:
+    description: "Commit message for the changes"
+    type: string
+    default: "Prettier fixes applied automatically"
+
+outputs:
+  branch-name:
+    description: "The branch where changes were committed"
 
 runs:
   using: "composite"
@@ -31,26 +47,33 @@ runs:
     - name: Handle package.json, Install dependencies, Run Prettier, and Clean up
       run: |
         CREATED_PACKAGE_JSON=false
-        if [ ! -f package.json ]; then
-          npm init -y
-          echo "package.json created"
-          CREATED_PACKAGE_JSON=true
+        if [ "${{ inputs.skip-package-setup }}" != "true" ]; then
+          if [ ! -f package.json ]; then
+            echo "Setting up package.json..."
+            npm init -y
+            CREATED_PACKAGE_JSON=true
+          fi
+          echo "... and installing dependencies..."
+          npm install
         fi
 
-        # Install dependencies
-        npm install
+        if ! npx prettier -v > /dev/null 2>&1; then
+          echo "Prettier not found. Installing temporarily..."
+          npm install prettier
+        fi
 
-        # Run Prettier and fix
+        echo "Running Prettier..."
         npx prettier --write .
 
-        # Remove package.json if it was created in this run
-        if [ "$CREATED_PACKAGE_JSON" = "true" ]; then
+        if [ "$CREATED_PACKAGE_JSON" == "true" ]; then
+          echo "Cleaning up temporary files..."
           rm -f package.json package-lock.json
-          echo "package.json and package-lock.json removed"
+          rm -rf node_modules
         fi
+        # Keep in the same step to hold the context for $CREATED_PACKAGE_JSON
       shell: bash
 
-    - name: Check if there are changes to commit
+    - name: Commit and Push Changes if Any
       run: |
         if [ -z "$(git status --porcelain)" ]; then
           echo "No changes detected by Prettier. Exiting gracefully."
@@ -58,40 +81,46 @@ runs:
           # The rest of the script must be within the same step to really stop the execution
         fi
 
-        # Add changes
-        git add .
+        # Stage only non-workflow files
+        git add $(git diff --name-only | grep -vE '^.github/workflows/')
 
-        # Check for diffs in .github/workflows/*.yml file - to be fixed manually
+        # Check for changes in workflow files (unstaged changes) - to be fixed manually
         for file in .github/workflows/*.yml; do
-          if git diff --staged "$file" | grep -q .; then
+          if git diff "$file" | grep -q .; then
             echo "::warning title=Manual change required::Changes detected in $file. Manual intervention required to avoid conflicts with Super-Linter."
-            git diff --staged "$file"
-            # Unstage the changes git restore --staged "$file" or:
-            git reset "$file"
-            # Discard changes in the working directory, so that it doesn't trigger status --porcelain
-            git restore "$file"             
+            git diff "$file"
+            # As the workflow files are not staged, their changes do not trigger status --porcelain, so there's no need to (reset neither) restore them
           fi
         done
 
-        # Re-check after uneditable files reset
+        # Re-check after exclusions
         if [ -z "$(git status --porcelain)" ]; then
           echo "No editable changes detected by Prettier. Exiting gracefully."
           exit 0
-          # The rest of the script must be within the same step to really stop the execution
+          # The rest of the script must still be within the same step to really stop the execution
         fi
 
-        # Set branch name and create branch
-        TIMESTAMP=$(date +'%y%m%d%H%M%S')
-        SHORT_HASH=$(git rev-parse --short HEAD)
-        BRANCH_NAME="prettier/fix-${TIMESTAMP}-${SHORT_HASH}"
-        git checkout -b $BRANCH_NAME
-        echo "::warning title=New branch created::Consider pull request for a new branch: $BRANCH_NAME (or delete it)"
+        # Determine branch name based on commit-changes input
+        if ${{ inputs.commit-changes }}; then
+          BRANCH_NAME=$(git branch --show-current)
+          NOTICE_MESSAGE="A commit was successfully added to the current branch: $BRANCH_NAME"
+        else
+          # name includes timestam and short_hash
+          BRANCH_NAME="prettier/fix-$(date +'%y%m%d%H%M%S')-$(git rev-parse --short HEAD)"
+          git checkout -b "$BRANCH_NAME"
+          echo "::warning title=New branch created::Consider pull request for a new branch: $BRANCH_NAME (or delete it)"
+          NOTICE_MESSAGE="A commit was successfully added to the new branch: $BRANCH_NAME"
+        fi
+
+        # Configure Git user
         git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-        # Commit changes without including .github/workflows/*.yml that were reset above
-        git commit -m "Prettier fixes applied automatically on $(date +"%Y-%m-%d %H:%M:%S")"
+        # Commit and push changes with custom message
+        git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S') UTC"
+        git push origin "$BRANCH_NAME"
+        echo "::notice title=Commit added::$NOTICE_MESSAGE"
 
-        # Push changes to new branch
-        git push origin $BRANCH_NAME
+        # Set branch name as output
+        echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
       shell: bash
