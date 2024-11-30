@@ -117,7 +117,7 @@ runs:
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
         # Commit and push changes with custom message
-        git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S')"
+        git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S') UTC"
         git push origin "$BRANCH_NAME"
         echo "::notice title=Commit added::$NOTICE_MESSAGE"
 
