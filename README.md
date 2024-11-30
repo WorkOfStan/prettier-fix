@@ -24,18 +24,20 @@ Note: This action is not blocking, so the status remains green even if changes a
 
 ### Inputs
 
-| Input                | Description                                                                    | Default                                          |
-| -------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------ |
-| `node-version`       | Node.js version to use                                                         | `"20"`                                           |
-| `commit-changes`     | If `true`, commits changes to the current branch instead of creating a new one | `false`                                          |
-| `skip-package-setup` | If `true`, skips `npm init` and dependency installation steps                  | `false`                                          |
-| `commit-message`     | Commit message for the changes                                                 | `"Prettier fixes applied automatically"`         |
+| Input                | Description                                                                    | Default                                  |
+| -------------------- | ------------------------------------------------------------------------------ | ---------------------------------------- |
+| `node-version`       | Node.js version to use                                                         | `"20"`                                   |
+| `commit-changes`     | If `true`, commits changes to the current branch instead of creating a new one | `false`                                  |
+| `skip-package-setup` | If `true`, skips `npm init` and dependency installation steps                  | `false`                                  |
+| `commit-message`     | Commit message for the changes                                                 | `"Prettier fixes applied automatically"` |
 
 Note: it would be possible to use `git-user-name` and `git-user-email` as inputs to set-up the info about the author of the commits, but for clarity [actions/checkout](https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-using-the-built-in-token) recommends
+
 ```
   git config user.name "github-actions[bot]"
   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 ```
+
 Btw: GitHub displays name according to a known email.
 
 ### Outputs
