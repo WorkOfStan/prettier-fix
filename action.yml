@@ -12,22 +12,22 @@ branding:
   color: "blue"
 
 inputs:
-  node-version:
-    description: "Node.js version to use"
-    type: string
-    default: "20"
   commit-changes:
     description: "If true, commit changes to the current branch"
-    type: boolean
-    default: false
-  skip-package-setup:
-    description: "If true, skip npm initialization and installation"
     type: boolean
     default: false
   commit-message:
     description: "Commit message for the changes"
     type: string
     default: "Prettier fixes applied automatically"
+  node-version:
+    description: "Node.js version to use"
+    type: string
+    default: "20"
+  skip-package-setup:
+    description: "If true, skip npm initialization and installation"
+    type: boolean
+    default: false
 
 outputs:
   branch-name:
@@ -38,6 +38,13 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref }} # Fetch latest changes (even by previous job)
+        fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
+
+    # Fetch latest changes (even by previous job)
+    - name: Fetch latest changes
+      run: git pull origin ${{ github.ref }}
 
     - name: Set up Node.js
       uses: actions/setup-node@v4

@@ -8,9 +8,9 @@ With the release of [Super-Linter](https://github.com/super-linter/super-linter)
 
 ## Features
 
-- Automatically formats code using Prettier.
-- Creates a new branch (prefixed with `prettier/fix`) if changes are required, making it easy to review and merge. Or you can set the input parameter `commit-changes: true` to commit to the current branch.
-- Allows for customizable commit messages via the `commit-message` input.
+- **Automatic Fixes:** Automatically formats code using Prettier.
+- **Flexible Committing:** Creates a new branch (prefixed with `prettier/fix`) if changes are required, making it easy to review and merge. Or you can set the input parameter `commit-changes: true` to commit to the current branch. (Recommendation: start with committing to another branch and review in order to avoid surprises. Then commit to the same branch for incremental changes.)
+- **Configurable:** Allows for customizable commit messages via the `commit-message` input.
 - Provides the branch name as an output for downstream workflows.
 - Issues warnings for manual changes needed in `.github/workflows` files.
 
@@ -18,18 +18,28 @@ With the release of [Super-Linter](https://github.com/super-linter/super-linter)
 
 To automate Prettier, simply add [the provided YAML configuration](.github/workflows/prettier-fix.yml) to your repository.
 
-By default, if needed, a new branch with a name starting with `prettier/fix` will be created, making it easy to review and merge the fixes into your main branch.
+By default, if necessary, a new branch with a name starting with `prettier/fix` will be created, making it easy to review and merge fixes into your main branch.
 
-Note: This action is not blocking, so the status remains green even if changes are proposed in the form of a new branch. Then it’s up to you to either create a pull request to merge the changes or delete the branch.
+Note: This action is non-blocking, so the status remains green even when changes are proposed via a new branch.
+A notice message is displayed, and it is then up to you to either create a pull request to merge the changes or delete the branch.
 
-### Inputs
+### Permissions
 
-| Input                | Description                                                                    | Default                                  |
-| -------------------- | ------------------------------------------------------------------------------ | ---------------------------------------- |
-| `node-version`       | Node.js version to use                                                         | `"20"`                                   |
-| `commit-changes`     | If `true`, commits changes to the current branch instead of creating a new one | `false`                                  |
-| `skip-package-setup` | If `true`, skips `npm init` and dependency installation steps                  | `false`                                  |
-| `commit-message`     | Commit message for the changes                                                 | `"Prettier fixes applied automatically"` |
+This action requires the following permissions:
+
+```yaml
+permissions:
+  contents: write
+```
+
+### Inputs (all optional)
+
+| Input                | Description                                                                    | Type    | Default                                  |
+| -------------------- | ------------------------------------------------------------------------------ | ------- | ---------------------------------------- |
+| `commit-changes`     | If `true`, commits changes to the current branch instead of creating a new one | Boolean | `false`                                  |
+| `commit-message`     | Commit message for the changes                                                 | String  | `"Prettier fixes applied automatically"` |
+| `node-version`       | Node.js version to use                                                         | String  | `"20"`                                   |
+| `skip-package-setup` | If `true`, skips `npm init` and dependency installation steps                  | Boolean | `false`                                  |
 
 Note: it would be possible to use `git-user-name` and `git-user-email` as inputs to set-up the info about the author of the commits, but for clarity [actions/checkout](https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-using-the-built-in-token) recommends
 
@@ -38,7 +48,7 @@ Note: it would be possible to use `git-user-name` and `git-user-email` as inputs
   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 ```
 
-Btw: GitHub displays name according to a known email.
+Btw: GitHub displays the author's name according to a known email.
 
 ### Outputs
 
