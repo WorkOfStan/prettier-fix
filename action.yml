@@ -45,6 +45,7 @@ runs:
     # Fetch latest changes (even by previous job)
     - name: Fetch latest changes
       run: git pull origin ${{ github.ref }}
+      shell: bash
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
