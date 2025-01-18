@@ -10,7 +10,7 @@ With the release of [Super-Linter](https://github.com/super-linter/super-linter)
 
 - **Automatic Fixes:** Automatically formats code using Prettier.
 - **Flexible Committing:** Creates a new branch (prefixed with `prettier/fix`) if changes are required, making it easy to review and merge. Or you can set the input parameter `commit-changes: true` to commit to the current branch. (Recommendation: start with committing to another branch and review in order to avoid surprises. Then commit to the same branch for incremental changes.)
-- **Configurable:**  Allows for customizable commit messages via the `commit-message` input.
+- **Configurable:** Allows for customizable commit messages via the `commit-message` input.
 - Provides the branch name as an output for downstream workflows.
 - Issues warnings for manual changes needed in `.github/workflows` files.
 
