@@ -111,13 +111,13 @@ runs:
         # Determine branch name based on commit-changes input
         if ${{ inputs.commit-changes }}; then
           BRANCH_NAME=$(git branch --show-current)
-          NOTICE_MESSAGE="A commit was successfully added to the current branch: $BRANCH_NAME"
+          NOTICE_MESSAGE="A Prettier commit was successfully added to the current branch: $BRANCH_NAME"
         else
           # name includes timestam and short_hash
           BRANCH_NAME="prettier/fix-$(date +'%y%m%d%H%M%S')-$(git rev-parse --short HEAD)"
           git checkout -b "$BRANCH_NAME"
           echo "::warning title=New branch created::Consider pull request for a new branch: $BRANCH_NAME (or delete it)"
-          NOTICE_MESSAGE="A commit was successfully added to the new branch: $BRANCH_NAME"
+          NOTICE_MESSAGE="A Prettier commit was successfully added to the new branch: $BRANCH_NAME"
         fi
 
         # Configure Git user
