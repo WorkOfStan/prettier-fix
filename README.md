@@ -18,10 +18,10 @@ With the release of [Super-Linter](https://github.com/super-linter/super-linter)
 
 To automate Prettier, simply add [the provided YAML configuration](.github/workflows/prettier-fix.yml) to your repository.
 
-By default, if needed, a new branch with a name starting with `prettier/fix` is be created, making it easy to review and merge the fixes into your main branch.
+By default, if necessary, a new branch with a name starting with `prettier/fix` will be created, making it easy to review and merge fixes into your main branch.
 
-Note: This action is not blocking, so the status remains green even if changes are proposed in the form of a new branch.
-A notice message is displayed and then it’s up to you to either create a pull request to merge the changes or delete the branch.
+Note: This action is non-blocking, so the status remains green even when changes are proposed via a new branch.
+A notice message is displayed, and it is then up to you to either create a pull request to merge the changes or delete the branch.
 
 ### Permissions
 
