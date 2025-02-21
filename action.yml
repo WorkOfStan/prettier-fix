@@ -127,7 +127,9 @@ runs:
         # Commit and push changes with custom message
         git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S') UTC"
         git push origin "$BRANCH_NAME"
-        echo "::notice title=Commit added::$NOTICE_MESSAGE"
+        echo "::notice title=Prettier commit added::$NOTICE_MESSAGE"
+        COMMIT_URL=${{ github.server_url }}/${{ github.repository }}/commit/$(git rev-parse HEAD)
+        echo "::notice title=View the Prettier commit::${COMMIT_URL}"
 
         # Set branch name as output
         echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
