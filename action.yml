@@ -110,7 +110,10 @@ runs:
 
         # Determine branch name based on commit-changes input
         if ${{ inputs.commit-changes }}; then
-          BRANCH_NAME=$(git branch --show-current)
+          #BRANCH_NAME=$(git branch --show-current)
+          # `2>/dev/null` → Suppresses errors when not on a symbolic ref (e.g., in detached HEAD mode).
+          BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD)
+          # BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || git for-each-ref --format='%(upstream:short)' $(git rev-parse --symbolic-full-name HEAD))
           NOTICE_MESSAGE="A Prettier commit was added to the current branch: $BRANCH_NAME"
         else
           # name includes timestam and short_hash
