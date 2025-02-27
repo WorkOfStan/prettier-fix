@@ -111,13 +111,13 @@ runs:
         # Determine branch name based on commit-changes input
         if ${{ inputs.commit-changes }}; then
           BRANCH_NAME=$(git branch --show-current)
-          NOTICE_MESSAGE="A Prettier commit was successfully added to the current branch: $BRANCH_NAME"
+          NOTICE_MESSAGE="A Prettier commit was added to the current branch: $BRANCH_NAME"
         else
           # name includes timestam and short_hash
           BRANCH_NAME="prettier/fix-$(date +'%y%m%d%H%M%S')-$(git rev-parse --short HEAD)"
           git checkout -b "$BRANCH_NAME"
           echo "::warning title=New branch created::Consider pull request for a new branch: $BRANCH_NAME (or delete it)"
-          NOTICE_MESSAGE="A Prettier commit was successfully added to the new branch: $BRANCH_NAME"
+          NOTICE_MESSAGE="A Prettier commit was added to the new branch: $BRANCH_NAME"
         fi
 
         # Configure Git user
@@ -126,8 +126,8 @@ runs:
 
         # Commit and push changes with custom message
         git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S') UTC"
+        echo "::notice title=Prettier commit adding::$NOTICE_MESSAGE"        
         git push origin "$BRANCH_NAME"
-        echo "::notice title=Prettier commit added::$NOTICE_MESSAGE"
         COMMIT_URL=${{ github.server_url }}/${{ github.repository }}/commit/$(git rev-parse HEAD)
         echo "::notice title=View the Prettier commit::${COMMIT_URL}"
 
