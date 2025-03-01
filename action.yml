@@ -86,9 +86,10 @@ runs:
       run: |
         if [ "${{ inputs.commit-changes }}" == "true" ]; then
           BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-
           if [ "$BRANCH_NAME" == "HEAD" ] || [ -z "$BRANCH_NAME" ]; then
-            BRANCH_NAME="pull/2/merge" #"origin/${{ github.head_ref }}"
+            echo "Detached HEAD detected. Checking out PR branch locally..."
+            git checkout -b "${{ github.head_ref }}"
+            BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
           fi
 
           NOTICE_MESSAGE="A Prettier commit was added to the current branch: $BRANCH_NAME"
