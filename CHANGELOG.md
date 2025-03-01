@@ -21,13 +21,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.3] - 2025-03-01
 
+Fix pull request issues
+
 ### Added
 
 - debug info
 
 ### Fixed
 
-- Prevents issues with detached HEAD states (during pull request) by committing to the source branch of the pull request.
+- Prevents issues with changing files in detached HEAD states (during pull request) by committing to the source branch of the pull request.
 
 ## [1.1.2] - 2025-02-22
 
