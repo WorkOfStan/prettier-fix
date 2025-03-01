@@ -71,6 +71,7 @@ runs:
         fi
 
         echo "Running Prettier..."
+        npx prettier -v
         npx prettier --write .
 
         if [ "$CREATED_PACKAGE_JSON" == "true" ]; then
