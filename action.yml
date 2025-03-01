@@ -98,6 +98,20 @@ runs:
           NOTICE_MESSAGE="A Prettier commit was added to the new branch: $BRANCH_NAME"
         fi
 
+        #debug error: src refspec notest/2502 does not match any
+        echo "List All Local Branches"
+        git branch
+
+        echo "2. List All Remote Branches"
+        git branch -r
+
+        echo "3. List All References (Including Detached HEADs)"
+        git show-ref
+
+        echo "4. Check Your Current Checked-out Reference"
+        git status
+        #/debug
+
         echo "::notice title=Branch Determined::Using branch $BRANCH_NAME"
         echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
         echo "NOTICE_MESSAGE=$NOTICE_MESSAGE" >> $GITHUB_ENV
