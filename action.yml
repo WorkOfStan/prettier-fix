@@ -71,6 +71,7 @@ runs:
         fi
 
         echo "Running Prettier..."
+        npx prettier -v
         npx prettier --write .
 
         if [ "$CREATED_PACKAGE_JSON" == "true" ]; then
@@ -79,6 +80,44 @@ runs:
           rm -rf node_modules
         fi
         # Keep in the same step to hold the context for $CREATED_PACKAGE_JSON
+      shell: bash
+
+    - name: Determine Branch Name
+      id: set-branch
+      run: |
+        if [ "${{ inputs.commit-changes }}" == "true" ]; then
+          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+          if [ "$BRANCH_NAME" == "HEAD" ] || [ -z "$BRANCH_NAME" ]; then
+            echo "Detached HEAD detected. Checking out the PR branch directly from origin..."
+            # Fetch the PR branch tip and force a local branch matching the remote head
+            # Note: ${{ github.head_ref }} is a GitHub Actions built-in variable that contains the name of the source branch of a pull request (PR).
+            #   It is only available during workflow runs triggered by pull_request events.
+            git fetch origin ${{ github.head_ref }} --depth=1
+            git checkout -B "${{ github.head_ref }}" "origin/${{ github.head_ref }}"
+            BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+          fi
+
+          NOTICE_MESSAGE="A Prettier commit was added to the current branch: $BRANCH_NAME"
+        else
+          BRANCH_NAME="prettier/fix-$(date +'%y%m%d%H%M%S')-$(git rev-parse --short HEAD)"
+          git checkout -b "$BRANCH_NAME"
+          NOTICE_MESSAGE="A Prettier commit was added to the new branch: $BRANCH_NAME"
+        fi
+
+        #debug error: src refspec notest/2502 does not match any
+        echo "Debug 1. List All Local Branches"
+        git branch
+        echo "Debug 2. List All Remote Branches"
+        git branch -r
+        echo "Debug 3. List All References (Including Detached HEADs)"
+        git show-ref
+        echo "Debug 4. Check Your Current Checked-out Reference"
+        git status
+        #/debug
+
+        echo "Branch Determined::Using branch $BRANCH_NAME"
+        echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+        echo "NOTICE_MESSAGE=$NOTICE_MESSAGE" >> $GITHUB_ENV
       shell: bash
 
     - name: Commit and Push Changes if Any
@@ -108,16 +147,9 @@ runs:
           # The rest of the script must still be within the same step to really stop the execution
         fi
 
-        # Determine branch name based on commit-changes input
-        if ${{ inputs.commit-changes }}; then
-          BRANCH_NAME=$(git branch --show-current)
-          NOTICE_MESSAGE="A Prettier commit was successfully added to the current branch: $BRANCH_NAME"
-        else
-          # name includes timestam and short_hash
-          BRANCH_NAME="prettier/fix-$(date +'%y%m%d%H%M%S')-$(git rev-parse --short HEAD)"
-          git checkout -b "$BRANCH_NAME"
-          echo "::warning title=New branch created::Consider pull request for a new branch: $BRANCH_NAME (or delete it)"
-          NOTICE_MESSAGE="A Prettier commit was successfully added to the new branch: $BRANCH_NAME"
+        if [ -z "${{ env.BRANCH_NAME }}" ]; then
+          echo "::error title=Detached HEAD::No valid branch found, skipping commit."
+          exit 1
         fi
 
         # Configure Git user
@@ -126,11 +158,12 @@ runs:
 
         # Commit and push changes with custom message
         git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S') UTC"
-        git push origin "$BRANCH_NAME"
-        echo "::notice title=Prettier commit added::$NOTICE_MESSAGE"
+        echo "::notice title=Prettier commit adding::${{ env.NOTICE_MESSAGE }}"
+        git push origin "${{ env.BRANCH_NAME }}"
+
         COMMIT_URL=${{ github.server_url }}/${{ github.repository }}/commit/$(git rev-parse HEAD)
         echo "::notice title=View the Prettier commit::${COMMIT_URL}"
 
         # Set branch name as output
-        echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+        echo "branch-name=${{ env.BRANCH_NAME }}" >> $GITHUB_OUTPUT
       shell: bash
