@@ -81,6 +81,28 @@ runs:
         # Keep in the same step to hold the context for $CREATED_PACKAGE_JSON
       shell: bash
 
+    - name: Determine Branch Name
+      id: set-branch
+      run: |
+        if [ "${{ inputs.commit-changes }}" == "true" ]; then
+          BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+          if [ "$BRANCH_NAME" == "HEAD" ] || [ -z "$BRANCH_NAME" ]; then
+            BRANCH_NAME="${{ github.head_ref }}"
+          fi
+
+          NOTICE_MESSAGE="A Prettier commit was added to the current branch: $BRANCH_NAME"
+        else
+          BRANCH_NAME="prettier/fix-$(date +'%y%m%d%H%M%S')-$(git rev-parse --short HEAD)"
+          git checkout -b "$BRANCH_NAME"
+          NOTICE_MESSAGE="A Prettier commit was added to the new branch: $BRANCH_NAME"
+        fi
+
+        echo "::notice title=Branch Determined::Using branch $BRANCH_NAME"
+        echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+        echo "NOTICE_MESSAGE=$NOTICE_MESSAGE" >> $GITHUB_ENV
+      shell: bash
+
     - name: Commit and Push Changes if Any
       run: |
         if [ -z "$(git status --porcelain)" ]; then
@@ -108,24 +130,9 @@ runs:
           # The rest of the script must still be within the same step to really stop the execution
         fi
 
-        # Determine branch name based on commit-changes input
-        if ${{ inputs.commit-changes }}; then
-          BRANCH_NAME=$(git branch --show-current)
-          # `2>/dev/null` → Suppresses errors when not on a symbolic ref (e.g., in detached HEAD mode).
-          #BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD)
-          #BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || git for-each-ref --format='%(upstream:short)' $(git rev-parse --symbolic-full-name HEAD))
-          #BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || git reflog show --format='%gs' -n 10 | grep -o 'pull: .*' | head -n 1 | awk '{print $2}')
-          #BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || git reflog --format='%gs' -n 50 | grep -Eo 'pull: .*' | head -n 1 | awk '{print $2}')
-          #BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || ${{ github.ref }})
-          echo "::notice title=Current branch name::Current branch name $BRANCH_NAME"        
-          # todo if branch name = '' (Detached due to checkout) notice no save and exit 0
-          NOTICE_MESSAGE="A Prettier commit was added to the current branch: $BRANCH_NAME"
-        else
-          # name includes timestam and short_hash
-          BRANCH_NAME="prettier/fix-$(date +'%y%m%d%H%M%S')-$(git rev-parse --short HEAD)"
-          git checkout -b "$BRANCH_NAME"
-          echo "::warning title=New branch created::Consider pull request for a new branch: $BRANCH_NAME (or delete it)"
-          NOTICE_MESSAGE="A Prettier commit was added to the new branch: $BRANCH_NAME"
+        if [ -z "${{ env.BRANCH_NAME }}" ]; then
+          echo "::error title=Detached HEAD::No valid branch found, skipping commit."
+          exit 0
         fi
 
         # Configure Git user
@@ -134,18 +141,12 @@ runs:
 
         # Commit and push changes with custom message
         git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S') UTC"
-        echo "::notice title=Prettier commit adding::$NOTICE_MESSAGE"
-        if [ -n "$BRANCH_NAME" ]; then
-          git push origin "$BRANCH_NAME"
-        else
-          # Push detached to the PR branch
-          git checkout "${{ github.head_ref }}"
-          git push origin "${{ github.head_ref }}"
-          # todo branchname to gh output
-        fi
+        echo "::notice title=Prettier commit adding::${{ env.NOTICE_MESSAGE }}"
+        git push origin "${{ env.BRANCH_NAME }}"
+
         COMMIT_URL=${{ github.server_url }}/${{ github.repository }}/commit/$(git rev-parse HEAD)
         echo "::notice title=View the Prettier commit::${COMMIT_URL}"
 
         # Set branch name as output
-        echo "branch-name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+        echo "branch-name=${{ env.BRANCH_NAME }}" >> $GITHUB_OUTPUT
       shell: bash
