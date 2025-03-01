@@ -87,8 +87,10 @@ runs:
         if [ "${{ inputs.commit-changes }}" == "true" ]; then
           BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
           if [ "$BRANCH_NAME" == "HEAD" ] || [ -z "$BRANCH_NAME" ]; then
-            echo "Detached HEAD detected. Checking out PR branch locally..."
-            git checkout -b "${{ github.head_ref }}"
+            echo "Detached HEAD detected. Checking out the PR branch directly from origin..."
+            # Fetch the PR branch tip and force a local branch matching the remote head
+            git fetch origin ${{ github.head_ref }} --depth=1
+            git checkout -B "${{ github.head_ref }}" "origin/${{ github.head_ref }}"
             BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
           fi
 
