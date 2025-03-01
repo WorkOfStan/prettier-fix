@@ -139,7 +139,9 @@ runs:
           git push origin "$BRANCH_NAME"
         else
           # Push detached to the PR branch
+          git checkout "${{ github.head_ref }}"
           git push origin "${{ github.head_ref }}"
+          # todo branchname to gh output
         fi
         COMMIT_URL=${{ github.server_url }}/${{ github.repository }}/commit/$(git rev-parse HEAD)
         echo "::notice title=View the Prettier commit::${COMMIT_URL}"
