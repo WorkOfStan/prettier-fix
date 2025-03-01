@@ -90,6 +90,8 @@ runs:
           if [ "$BRANCH_NAME" == "HEAD" ] || [ -z "$BRANCH_NAME" ]; then
             echo "Detached HEAD detected. Checking out the PR branch directly from origin..."
             # Fetch the PR branch tip and force a local branch matching the remote head
+            # Note: ${{ github.head_ref }} is a GitHub Actions built-in variable that contains the name of the source branch of a pull request (PR).
+            #   It is only available during workflow runs triggered by pull_request events.
             git fetch origin ${{ github.head_ref }} --depth=1
             git checkout -B "${{ github.head_ref }}" "origin/${{ github.head_ref }}"
             BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
@@ -103,20 +105,17 @@ runs:
         fi
 
         #debug error: src refspec notest/2502 does not match any
-        echo "List All Local Branches"
+        echo "Debug 1. List All Local Branches"
         git branch
-
-        echo "2. List All Remote Branches"
+        echo "Debug 2. List All Remote Branches"
         git branch -r
-
-        echo "3. List All References (Including Detached HEADs)"
+        echo "Debug 3. List All References (Including Detached HEADs)"
         git show-ref
-
-        echo "4. Check Your Current Checked-out Reference"
+        echo "Debug 4. Check Your Current Checked-out Reference"
         git status
         #/debug
 
-        echo "::notice title=Branch Determined::Using branch $BRANCH_NAME"
+        echo "Branch Determined::Using branch $BRANCH_NAME"
         echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
         echo "NOTICE_MESSAGE=$NOTICE_MESSAGE" >> $GITHUB_ENV
       shell: bash

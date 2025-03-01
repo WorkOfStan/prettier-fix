@@ -19,6 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [1.1.3] - 2025-03-01
+
+### Added
+
+- debug info
+
+### Fixed
+
+- Prevents issues with detached HEAD states (during pull request) by committing to the source branch of the pull request.
+
 ## [1.1.2] - 2025-02-22
 
 ### Added
@@ -73,7 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - This GitHub Action automates Prettier formatting across your project, ensuring consistent code styling by creating a new branch for review when necessary. It simplifies integrating Prettier into your workflow, although updates to workflow YAML files in `.github/workflows/` must be done manually.
 
-[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.2...HEAD
+[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.3...HEAD
+[1.1.3]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.2...v1.1.3?w=1
 [1.1.2]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.1...v1.1.2?w=1
 [1.1.1]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.0...v1.1.1?w=1
 [1.1.0]: https://github.com/WorkOfStan/prettier-fix/compare/v1.0.3...v1.1.0?w=1
