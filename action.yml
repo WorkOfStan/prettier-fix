@@ -110,12 +110,13 @@ runs:
 
         # Determine branch name based on commit-changes input
         if ${{ inputs.commit-changes }}; then
-          BRANCH_NAME=$(git branch --show-current)
+          #BRANCH_NAME=$(git branch --show-current)
           # `2>/dev/null` → Suppresses errors when not on a symbolic ref (e.g., in detached HEAD mode).
           #BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --short HEAD)
           #BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || git for-each-ref --format='%(upstream:short)' $(git rev-parse --symbolic-full-name HEAD))
           #BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || git reflog show --format='%gs' -n 10 | grep -o 'pull: .*' | head -n 1 | awk '{print $2}')
           #BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || git reflog --format='%gs' -n 50 | grep -Eo 'pull: .*' | head -n 1 | awk '{print $2}')
+          BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null || ${{ github.ref }})
           echo "::notice title=Current branch name::Current branch name $BRANCH_NAME"        
           # todo if branch name = '' (Detached due to checkout) notice no save and exit 0
           NOTICE_MESSAGE="A Prettier commit was added to the current branch: $BRANCH_NAME"
