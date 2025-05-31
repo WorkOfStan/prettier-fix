@@ -12,6 +12,11 @@ on:
       # notest branches to ignore testing of partial online commits
       - "notest/**"
 
+  schedule:
+    # Run the workflow at 6:30 AM UTC on the 18th of every month
+    - cron: "30 6 18 * *"
+    # Scheduled runs should not commit-changes automatically to the same branch
+
 permissions:
   contents: read
 
