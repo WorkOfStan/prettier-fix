@@ -1,0 +1,22 @@
+---
+name: Super-linter
+
+on:
+  push:
+    branches-ignore:
+      # notest branches to ignore testing of partial online commits
+      - "notest/**"
+
+  pull_request:
+    branches-ignore:
+      # notest branches to ignore testing of partial online commits
+      - "notest/**"
+
+permissions:
+  contents: read
+
+jobs:
+  super-linter:
+    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.3
+    with:
+      runs-on: "ubuntu-latest"
