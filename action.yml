@@ -20,10 +20,19 @@ inputs:
     description: "Commit message for the changes"
     type: string
     default: "Prettier fixes applied automatically"
+  debug:
+    description: "Enable extra debug output"
+    type: boolean
+    default: false
   node-version:
     description: "Node.js version to use"
     type: string
     default: "20"
+  prettier-config-path:
+    description: "Optional path to a custom Prettier config file"
+    type: string
+    required: false
+    default: ""
   skip-package-setup:
     description: "If true, skip npm initialization and installation"
     type: boolean
@@ -32,6 +41,8 @@ inputs:
 outputs:
   branch-name:
     description: "The branch where changes were committed"
+  changed-files:
+    description: "Comma-separated list of files changed by Prettier"
 
 runs:
   using: "composite"
@@ -72,7 +83,11 @@ runs:
 
         echo "Running Prettier..."
         npx prettier -v
-        npx prettier --write .
+        if [ -n "${{ inputs.prettier-config-path }}" ]; then
+          npx prettier --config "${{ inputs.prettier-config-path }}" --write .
+        else
+          npx prettier --write .
+        fi
 
         if [ "$CREATED_PACKAGE_JSON" == "true" ]; then
           echo "Cleaning up temporary files..."
@@ -85,6 +100,17 @@ runs:
     - name: Determine Branch Name
       id: set-branch
       run: |
+        if [ "${{ inputs.debug }}" = "true" ]; then
+          echo "Debug 1. List All Local Branches"
+          git branch
+          echo "Debug 2. List All Remote Branches"
+          git branch -r
+          echo "Debug 3. List All References (Including Detached HEADs)"
+          git show-ref
+          echo "Debug 4. Check Your Current Checked-out Reference"
+          git status
+        fi
+
         if [ "${{ inputs.commit-changes }}" == "true" ]; then
           BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
           if [ "$BRANCH_NAME" == "HEAD" ] || [ -z "$BRANCH_NAME" ]; then
@@ -104,32 +130,26 @@ runs:
           NOTICE_MESSAGE="A Prettier commit was added to the new branch: $BRANCH_NAME"
         fi
 
-        #debug error: src refspec notest/2502 does not match any
-        echo "Debug 1. List All Local Branches"
-        git branch
-        echo "Debug 2. List All Remote Branches"
-        git branch -r
-        echo "Debug 3. List All References (Including Detached HEADs)"
-        git show-ref
-        echo "Debug 4. Check Your Current Checked-out Reference"
-        git status
-        #/debug
-
         echo "Branch Determined::Using branch $BRANCH_NAME"
         echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
         echo "NOTICE_MESSAGE=$NOTICE_MESSAGE" >> $GITHUB_ENV
       shell: bash
 
     - name: Commit and Push Changes if Any
+      id: commit-push
       run: |
+        CHANGED_FILES=""
         if [ -z "$(git status --porcelain)" ]; then
           echo "No changes detected by Prettier. Exiting gracefully."
+          # This sets the output named branch-name to an empty value. Which is useful to signal “no branch was created” in a way that downstream steps can detect reliably.
+          echo "branch-name=" >> $GITHUB_OUTPUT
+          echo "changed-files=" >> $GITHUB_OUTPUT
           exit 0
           # The rest of the script must be within the same step to really stop the execution
         fi
 
-        # Stage only non-workflow files
-        git add $(git diff --name-only | grep -vE '^.github/workflows/')
+        # Only add changed non-workflow files, safe for spaces
+        git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/' | while IFS= read -r file; do git add "$file"; done
 
         # Check for changes in workflow files (unstaged changes) - to be fixed manually
         for file in .github/workflows/*.yml; do
@@ -143,12 +163,16 @@ runs:
         # Re-check after exclusions
         if [ -z "$(git status --porcelain)" ]; then
           echo "No editable changes detected by Prettier. Exiting gracefully."
+          echo "branch-name=" >> $GITHUB_OUTPUT
+          echo "changed-files=" >> $GITHUB_OUTPUT
           exit 0
           # The rest of the script must still be within the same step to really stop the execution
         fi
 
         if [ -z "${{ env.BRANCH_NAME }}" ]; then
           echo "::error title=Detached HEAD::No valid branch found, skipping commit."
+          echo "branch-name=" >> $GITHUB_OUTPUT
+          echo "changed-files=" >> $GITHUB_OUTPUT
           exit 1
         fi
 
@@ -158,12 +182,18 @@ runs:
 
         # Commit and push changes with custom message
         git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S') UTC"
+
         echo "::notice title=Prettier commit adding::${{ env.NOTICE_MESSAGE }}"
         git push origin "${{ env.BRANCH_NAME }}"
 
         COMMIT_URL=${{ github.server_url }}/${{ github.repository }}/commit/$(git rev-parse HEAD)
         echo "::notice title=View the Prettier commit::${COMMIT_URL}"
 
-        # Set branch name as output
+        # Set outputs
+        CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD | tr '\n' ',' | sed 's/,$//')
         echo "branch-name=${{ env.BRANCH_NAME }}" >> $GITHUB_OUTPUT
+        echo "changed-files=${CHANGED_FILES}" >> $GITHUB_OUTPUT
+        if [ "${{ inputs.debug }}" = "true" ]; then
+          echo "changed-files=${CHANGED_FILES}"
+        fi
       shell: bash
