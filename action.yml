@@ -193,4 +193,7 @@ runs:
         CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD | tr '\n' ',' | sed 's/,$//')
         echo "branch-name=${{ env.BRANCH_NAME }}" >> $GITHUB_OUTPUT
         echo "changed-files=${CHANGED_FILES}" >> $GITHUB_OUTPUT
+        if [ "${{ inputs.debug }}" = "true" ]; then
+          echo "changed-files=${CHANGED_FILES}"
+        fi
       shell: bash
