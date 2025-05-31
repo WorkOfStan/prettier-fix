@@ -15,5 +15,6 @@ jobs:
         # Use the latest commit in the main branch.
         uses: WorkOfStan/prettier-fix@main
         with:
-          #node-version: "20"
           commit-changes: true
+          #debug: true
+          #node-version: "20"
