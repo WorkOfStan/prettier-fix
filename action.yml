@@ -84,9 +84,9 @@ runs:
         echo "Running Prettier..."
         npx prettier -v
         if [ -n "${{ inputs.prettier-config-path }}" ]; then
-          npx prettier --config "${{ inputs.prettier-config-path }}" --write .
+          npx prettier --config "${{ inputs.prettier-config-path }}" --write . --log-level debug
         else
-          npx prettier --write .
+          npx prettier --write . --log-level debug
         fi
 
         if [ "$CREATED_PACKAGE_JSON" == "true" ]; then
