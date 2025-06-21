@@ -149,10 +149,12 @@ runs:
         fi
 
         # Only add changed non-workflow files, safe for spaces
+        echo "DEBUG: Only add changed non-workflow files"
         git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/' | while IFS= read -r file; do git add "$file"; done
 
         # Check for changes in workflow files (unstaged changes) - to be fixed manually
         for file in .github/workflows/*.yml; do
+          echo "DEBUG: to be git diff $file"
           if git diff "$file" | grep -q .; then
             echo "::warning title=Manual change required::Changes detected in $file. Manual intervention required to avoid conflicts with Super-Linter."
             git diff "$file"
@@ -177,10 +179,12 @@ runs:
         fi
 
         # Configure Git user
+        echo "DEBUG: config git user"
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
         # Commit and push changes with custom message
+        echo "DEBUG: git commit"
         git commit -m "${{ inputs.commit-message }} on $(date +'%Y-%m-%d %H:%M:%S') UTC"
 
         echo "::notice title=Prettier commit adding::${{ env.NOTICE_MESSAGE }}"
