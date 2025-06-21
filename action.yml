@@ -84,7 +84,7 @@ runs:
         echo "Running Prettier..."
         npx prettier -v
         if [ -n "${{ inputs.prettier-config-path }}" ]; then
-          npx prettier --config "${{ inputs.prettier-config-path }}" --write . --log-level debug
+          npx prettier --config "${{ inputs.prettier-config-path }}" --write .
         else
           npx prettier --write .
         fi
