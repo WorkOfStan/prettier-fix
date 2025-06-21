@@ -155,8 +155,13 @@ runs:
         git status --porcelain | awk '{print $2}'
         echo "grep"
         git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/'
-        echo "while"
-        git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/' | while IFS= read -r file; do echo "DEBUG git add $file";git add "$file"; done
+        #echo "while"
+        #git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/' | while IFS= read -r file; do echo "DEBUG git add $file";git add "$file"; done
+        echo "DEBUG new"
+        git status --porcelain | cut -c4- | grep -vE '^.github/workflows/' | while IFS= read -r file; do
+          echo "DEBUG git add $file"
+          git add "$file"
+        done
 
         # Check for changes in workflow files (unstaged changes) - to be fixed manually
         echo "DEBUG Check for changes in workflow files"
