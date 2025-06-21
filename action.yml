@@ -150,9 +150,10 @@ runs:
 
         # Only add changed non-workflow files, safe for spaces
         echo "DEBUG: Only add changed non-workflow files"
-        git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/' | while IFS= read -r file; do git add "$file"; done
+        git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/' | while IFS= read -r file; do echo "DEBUG git add $file";git add "$file"; done
 
         # Check for changes in workflow files (unstaged changes) - to be fixed manually
+        echo "DEBUG Check for changes in workflow files"
         for file in .github/workflows/*.yml; do
           echo "DEBUG: to be git diff $file"
           if git diff "$file" | grep -q .; then
