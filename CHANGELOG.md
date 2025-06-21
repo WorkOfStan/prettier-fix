@@ -25,7 +25,7 @@ fix: only warn about `.github/workflows/*.yml` issues
 
 ### Fixed
 
-- if only a `.github/workflows/*.yml` needs prettier fix, then end with warning, not with an error
+- if only `.github/workflows/*.yml` need prettier fix, then end with warning, not with an error
 
 ## [1.1.4] - 2025-05-31
 
