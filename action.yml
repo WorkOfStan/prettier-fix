@@ -148,9 +148,6 @@ runs:
           # The rest of the script must be within the same step to really stop the execution
         fi
 
-        # Only add changed non-workflow files, safe for spaces
-        git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/' | while IFS= read -r file; do git add "$file"; done
-
         # Check for changes in workflow files (unstaged changes) - to be fixed manually
         for file in .github/workflows/*.yml; do
           if git diff "$file" | grep -q .; then
@@ -160,8 +157,14 @@ runs:
           fi
         done
 
-        # Re-check after exclusions
-        if [ -z "$(git status --porcelain)" ]; then
+        # Only add changed non-workflow files, safe for spaces
+        # Why cut at -c4-? Because the first 3 characters in git status --porcelain are status indicators (like staged/unstaged/ignored), and you just want the actual file path that follows.
+        if output=$(git status --porcelain | cut -c4- | grep -vE '^.github/workflows/'); then
+          printf '%s\n' "$output" | while IFS= read -r file; do
+            git add "$file"
+          done
+        else
+          # no lines selected, but not a “real” error (as grep resulting in no lines ends with exit 1)
           echo "No editable changes detected by Prettier. Exiting gracefully."
           echo "branch-name=" >> $GITHUB_OUTPUT
           echo "changed-files=" >> $GITHUB_OUTPUT
