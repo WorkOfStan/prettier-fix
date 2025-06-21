@@ -153,12 +153,12 @@ runs:
         git status --porcelain
         echo "awk"
         git status --porcelain | awk '{print $2}'
-        echo "grep"
-        git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/'
+        #echo "grep"
+        #git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/'
         #echo "while"
         #git status --porcelain | awk '{print $2}' | grep -vE '^.github/workflows/' | while IFS= read -r file; do echo "DEBUG git add $file";git add "$file"; done
-        echo "DEBUG grep2"
-        git status --porcelain | cut -c4- | grep -vE '^.github/workflows/'
+        #echo "DEBUG grep2"
+        #git status --porcelain | cut -c4- | grep -vE '^.github/workflows/'
         echo "DEBUG new"
         if output=$(git status --porcelain | cut -c4- | grep -vE '^.github/workflows/'); then
           printf '%s\n' "$output" | while IFS= read -r file; do
