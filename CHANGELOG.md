@@ -19,6 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [1.1.6] - 2025-09-12
+
+chore: bump GitHub Actions
+
+### Changed
+
+- bump super-linter to v8.1.0
+- bump actions/checkout to v5
+
 ## [1.1.5] - 2025-06-21
 
 fix: only warn about `.github/workflows/*.yml` issues
@@ -42,7 +51,7 @@ chore: outputs `changed-files`
 
 ## [1.1.3] - 2025-03-01
 
-Fix pull request issues
+fix: pull request issues
 
 ### Added
 
@@ -106,7 +115,8 @@ Fix pull request issues
 
 - This GitHub Action automates Prettier formatting across your project, ensuring consistent code styling by creating a new branch for review when necessary. It simplifies integrating Prettier into your workflow, although updates to workflow YAML files in `.github/workflows/` must be done manually.
 
-[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.5...HEAD
+[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6...HEAD
+[1.1.6]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.5...v1.1.6?w=1
 [1.1.5]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.4...v1.1.5?w=1
 [1.1.4]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.3...v1.1.4?w=1
 [1.1.3]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.2...v1.1.3?w=1

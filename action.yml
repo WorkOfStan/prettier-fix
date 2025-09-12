@@ -19,7 +19,7 @@ inputs:
   commit-message:
     description: "Commit message for the changes"
     type: string
-    default: "Prettier fixes applied automatically"
+    default: "chore: Prettier fixes applied automatically"
   debug:
     description: "Enable extra debug output"
     type: boolean

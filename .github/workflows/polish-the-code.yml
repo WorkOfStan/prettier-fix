@@ -21,6 +21,6 @@ permissions:
 
 jobs:
   super-linter:
-    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.5
+    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.5.1
     with:
       runs-on: "ubuntu-latest"
