@@ -1,6 +1,16 @@
 ---
 name: Prettier-fix
-on: [pull_request, push]
+
+on:
+  push:
+    branches-ignore:
+      # notest branches to ignore testing of partial online commits
+      - "notest/**"
+
+  pull_request:
+    branches-ignore:
+      # notest branches to ignore testing of partial online commits
+      - "notest/**"
 
 permissions:
   contents: write
