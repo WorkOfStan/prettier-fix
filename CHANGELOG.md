@@ -19,6 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [1.1.6.1] - 2025-09-13
+
+fix: Tags MUST NOT trigger the GitHub Action.
+
+### Fixed
+
+- Trigger changed to ignore tags. I.e. change of the original trigger `on: [pull_request, push]` which caught also tags. (When running on a tag, actions/checkout runs on refs/tags/vX.Y.Z, so you end up with a detached HEAD, and github.head_ref is empty (it only exists on pull_request).)
+
 ## [1.1.6] - 2025-09-12
 
 chore: bump GitHub Actions
@@ -115,7 +123,8 @@ fix: pull request issues
 
 - This GitHub Action automates Prettier formatting across your project, ensuring consistent code styling by creating a new branch for review when necessary. It simplifies integrating Prettier into your workflow, although updates to workflow YAML files in `.github/workflows/` must be done manually.
 
-[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6...HEAD
+[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6.1...HEAD
+[1.1.6.1]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6...v1.1.6.1?w=1
 [1.1.6]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.5...v1.1.6?w=1
 [1.1.5]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.4...v1.1.5?w=1
 [1.1.4]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.3...v1.1.4?w=1
