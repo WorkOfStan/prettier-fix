@@ -19,7 +19,7 @@ inputs:
   commit-message:
     description: "Commit message for the changes"
     type: string
-    default: "chore: Prettier fixes applied automatically"
+    default: "chore(prettier): apply Prettier fixes automatically"
   debug:
     description: "Enable extra debug output"
     type: boolean
@@ -47,6 +47,10 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Display version
+      run: echo "prettier-fix::v1.1.6.2 running"
+      shell: bash
+
     - name: Checkout code
       uses: actions/checkout@v5
       with:

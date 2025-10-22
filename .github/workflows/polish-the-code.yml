@@ -20,7 +20,34 @@ permissions:
   contents: read
 
 jobs:
+  commit-check:
+    runs-on: ubuntu-latest
+    # use permissions because pull-request comments are used
+    permissions:
+      contents: read
+      pull-requests: write
+    # Limit the running time
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha }} # checkout PR HEAD commit
+          fetch-depth: 0 # required for merge-base check
+          persist-credentials: false
+      - uses: commit-check/commit-check-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # use GITHUB_TOKEN because use of pr-comments
+        with:
+          message: true
+          # to accept dependabot/github_actions/*
+          # branch: false # todo might not be necessary as "dependabot[bot]" author is ignored
+          author-name: true
+          author-email: true
+          job-summary: true
+          pr-comments: ${{ github.event_name == 'pull_request' }}
+
   super-linter:
-    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.5.1
+    needs: commit-check
+    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.7
     with:
       runs-on: "ubuntu-latest"
