@@ -19,6 +19,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [1.1.6.2] - 2025-10-23
+
+chore: make the commit message compliant with Conventional Commits
+
+### Changed
+
+- make the commit message compliant with Conventional Commits
+- Bump [actions/setup-node](https://github.com/actions/setup-node) from 4 to 6.
+  - [Release notes](https://github.com/actions/setup-node/releases)
+  - [Commits](https://github.com/actions/setup-node/compare/v4...v6)
+
 ## [1.1.6.1] - 2025-09-13
 
 fix: Tags MUST NOT trigger the GitHub Action.
@@ -123,7 +134,8 @@ fix: pull request issues
 
 - This GitHub Action automates Prettier formatting across your project, ensuring consistent code styling by creating a new branch for review when necessary. It simplifies integrating Prettier into your workflow, although updates to workflow YAML files in `.github/workflows/` must be done manually.
 
-[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6.1...HEAD
+[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6.2...HEAD
+[1.1.6.2]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6.1...v1.1.6.2?w=1
 [1.1.6.1]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6...v1.1.6.1?w=1
 [1.1.6]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.5...v1.1.6?w=1
 [1.1.5]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.4...v1.1.5?w=1

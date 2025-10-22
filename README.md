@@ -34,14 +34,14 @@ permissions:
 
 ### Inputs (all optional)
 
-| Input                  | Description                                                                    | Type    | Default                                  |
-| ---------------------- | ------------------------------------------------------------------------------ | ------- | ---------------------------------------- |
-| `commit-changes`       | If `true`, commits changes to the current branch instead of creating a new one | Boolean | `false`                                  |
-| `commit-message`       | Commit message for the changes                                                 | String  | `"Prettier fixes applied automatically"` |
-| `debug`                | Enable extra debug output (list of branches).                                  | Boolean | `false`                                  |
-| `node-version`         | Node.js version to use                                                         | String  | `"20"`                                   |
-| `prettier-config-path` | Optional path to a custom Prettier config file                                 | String  | `""`                                     |
-| `skip-package-setup`   | If `true`, skips `npm init` and dependency installation steps                  | Boolean | `false`                                  |
+| Input                  | Description                                                                    | Type    | Default                                                 |
+| ---------------------- | ------------------------------------------------------------------------------ | ------- | ------------------------------------------------------- |
+| `commit-changes`       | If `true`, commits changes to the current branch instead of creating a new one | Boolean | `false`                                                 |
+| `commit-message`       | Commit message for the changes                                                 | String  | `"chore(prettier): apply Prettier fixes automatically"` |
+| `debug`                | Enable extra debug output (list of branches).                                  | Boolean | `false`                                                 |
+| `node-version`         | Node.js version to use                                                         | String  | `"20"`                                                  |
+| `prettier-config-path` | Optional path to a custom Prettier config file                                 | String  | `""`                                                    |
+| `skip-package-setup`   | If `true`, skips `npm init` and dependency installation steps                  | Boolean | `false`                                                 |
 
 Note: it would be possible to use `git-user-name` and `git-user-email` as inputs to set-up the info about the author of the commits, but for clarity [actions/checkout](https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-using-the-built-in-token) recommends
 
