@@ -21,9 +21,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.6.2] - 2025-10-23
 
+chore: make the commit message compliant with Conventional Commits
+
 ### Changed
 
 - make the commit message compliant with Conventional Commits
+- Bump [actions/setup-node](https://github.com/actions/setup-node) from 4 to 6.
+  - [Release notes](https://github.com/actions/setup-node/releases)
+  - [Commits](https://github.com/actions/setup-node/compare/v4...v6)
 
 ## [1.1.6.1] - 2025-09-13
 

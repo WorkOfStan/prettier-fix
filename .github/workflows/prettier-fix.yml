@@ -22,8 +22,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Invoke the Prettier fix
-        # Use the latest commit in the main branch.
-        uses: WorkOfStan/prettier-fix@main
+        # Use the latest minor version within the current major version.
+        uses: WorkOfStan/prettier-fix@v1
         with:
           commit-changes: true
           #debug: true
