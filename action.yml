@@ -52,7 +52,7 @@ runs:
       shell: bash
 
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         ref: ${{ github.ref }} # Fetch latest changes (even by previous job)
         fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
