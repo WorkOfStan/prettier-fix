@@ -21,11 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.7] - 2026-03-15
 
-ci(node.js): change the default from version 20 to 24
+ci(Node.js): change the default from version 20 to 24
 
 ### Changed
 
-- refactor(deps): bump node.js, actions/checkout, seablast/actions:linter
+- refactor(deps): bump Node.js, actions/checkout, seablast/actions:linter
 
 ## [1.1.6.2] - 2025-10-23
 
