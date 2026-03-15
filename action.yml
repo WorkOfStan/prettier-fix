@@ -27,7 +27,7 @@ inputs:
   node-version:
     description: "Node.js version to use"
     type: string
-    default: "20"
+    default: "24"
   prettier-config-path:
     description: "Optional path to a custom Prettier config file"
     type: string
@@ -48,14 +48,16 @@ runs:
   using: "composite"
   steps:
     - name: Display version
-      run: echo "prettier-fix::v1.1.6.2 running"
+      run: echo "prettier-fix::v1.1.7 running"
       shell: bash
 
     - name: Checkout code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
-        ref: ${{ github.ref }} # Fetch latest changes (even by previous job)
-        fetch-depth: 0 # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
+        # Fetch latest changes (even by previous job)
+        ref: ${{ github.ref }}
+        # Fetch all history for all branches and tags. Otherwise github.event.pull_request.base.ref SHA isn't found.
+        fetch-depth: 0
 
     # Fetch latest changes (even by previous job)
     - name: Fetch latest changes
