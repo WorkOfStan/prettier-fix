@@ -39,7 +39,7 @@ permissions:
 | `commit-changes`       | If `true`, commits changes to the current branch instead of creating a new one | Boolean | `false`                                                 |
 | `commit-message`       | Commit message for the changes                                                 | String  | `"chore(prettier): apply Prettier fixes automatically"` |
 | `debug`                | Enable extra debug output (list of branches).                                  | Boolean | `false`                                                 |
-| `node-version`         | Node.js version to use                                                         | String  | `"20"`                                                  |
+| `node-version`         | Node.js version to use                                                         | String  | `"24"`                                                  |
 | `prettier-config-path` | Optional path to a custom Prettier config file                                 | String  | `""`                                                    |
 | `skip-package-setup`   | If `true`, skips `npm init` and dependency installation steps                  | Boolean | `false`                                                 |
 

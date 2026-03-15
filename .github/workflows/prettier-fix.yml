@@ -27,4 +27,4 @@ jobs:
         with:
           commit-changes: true
           #debug: true
-          #node-version: "20"
+          #node-version: "24"

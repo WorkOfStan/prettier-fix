@@ -29,14 +29,17 @@ jobs:
     # Limit the running time
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.head.sha }} # checkout PR HEAD commit
-          fetch-depth: 0 # required for merge-base check
+          # checkout PR HEAD commit
+          ref: ${{ github.event.pull_request.head.sha }}
+          # required for merge-base check
+          fetch-depth: 0
           persist-credentials: false
       - uses: commit-check/commit-check-action@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # use GITHUB_TOKEN because use of pr-comments
+          # use GITHUB_TOKEN because use of pr-comments
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           message: true
           # to accept dependabot/github_actions/*
@@ -48,6 +51,6 @@ jobs:
 
   super-linter:
     needs: commit-check
-    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.7
+    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.9
     with:
       runs-on: "ubuntu-latest"

@@ -19,6 +19,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [1.1.7] - 2026-03-15
+
+ci(Node.js): change the default from version 20 to 24
+
+### Changed
+
+- refactor(deps): bump Node.js, actions/checkout, seablast/actions:linter
+
 ## [1.1.6.2] - 2025-10-23
 
 chore: make the commit message compliant with Conventional Commits
@@ -134,7 +142,8 @@ fix: pull request issues
 
 - This GitHub Action automates Prettier formatting across your project, ensuring consistent code styling by creating a new branch for review when necessary. It simplifies integrating Prettier into your workflow, although updates to workflow YAML files in `.github/workflows/` must be done manually.
 
-[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6.2...HEAD
+[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.7...HEAD
+[1.1.7]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6.2...v1.1.7?w=1
 [1.1.6.2]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6.1...v1.1.6.2?w=1
 [1.1.6.1]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6...v1.1.6.1?w=1
 [1.1.6]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.5...v1.1.6?w=1
