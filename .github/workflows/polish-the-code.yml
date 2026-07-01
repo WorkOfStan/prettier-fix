@@ -51,6 +51,6 @@ jobs:
 
   super-linter:
     needs: commit-check
-    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.9
+    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.11
     with:
       runs-on: "ubuntu-latest"
