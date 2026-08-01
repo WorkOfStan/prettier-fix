@@ -36,7 +36,7 @@ jobs:
           # required for merge-base check
           fetch-depth: 0
           persist-credentials: false
-      - uses: commit-check/commit-check-action@v2
+      - uses: commit-check/commit-check-action@v2.11.1
         env:
           # use GITHUB_TOKEN because use of pr-comments
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
