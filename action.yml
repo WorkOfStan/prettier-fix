@@ -40,9 +40,11 @@ inputs:
 
 outputs:
   branch-name:
-    description: "The branch, where changes were committed"
+    description: "Branch where changes were committed"
+    value: ${{ steps.commit-push.outputs.branch-name }}
   changed-files:
     description: "Comma-separated list of files changed by Prettier"
+    value: ${{ steps.commit-push.outputs.changed-files }}
 
 runs:
   using: "composite"
@@ -185,7 +187,11 @@ runs:
           exit 1
         fi
 
-        # Configure Git user
+        # Use the GitHub Actions bot identity from the actions/checkout example.
+        # The name is the bot's login. The no-reply email includes its account ID
+        # (41898282) and login so GitHub can attribute the commits to that account.
+        # A fixed identity keeps attribution consistent across workflows.
+        # https://github.com/actions/checkout#push-a-commit-using-the-built-in-token
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 

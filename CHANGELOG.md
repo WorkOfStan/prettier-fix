@@ -19,6 +19,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### `Security` in case of vulnerabilities
 
+## [1.1.8] - 2026-11-22
+
+fix: expose branch-name and changed-files to calling workflows
+
+### Changed
+
+- bump Seablast Actions to 0.2.13
+- Clarify setup and formatting behavior in the README.
+- Document the action outputs and show when the action pushes changes or finishes without a commit.
+
 ## [1.1.7] - 2026-03-15
 
 ci(Node.js): change the default from version 20 to 24
@@ -142,7 +152,8 @@ fix: pull request issues
 
 - This GitHub Action automates Prettier formatting across your project, ensuring consistent code styling by creating a new branch for review when necessary. It simplifies integrating Prettier into your workflow, although updates to workflow YAML files in `.github/workflows/` must be done manually.
 
-[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.7...HEAD
+[Unreleased]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.8...HEAD
+[1.1.8]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.7...v1.1.8?w=1
 [1.1.7]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6.2...v1.1.7?w=1
 [1.1.6.2]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6.1...v1.1.6.2?w=1
 [1.1.6.1]: https://github.com/WorkOfStan/prettier-fix/compare/v1.1.6...v1.1.6.1?w=1
