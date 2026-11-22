@@ -35,7 +35,7 @@ jobs:
           persist-credentials: false
       - uses: commit-check/commit-check-action@v2
         env:
-          # use GITHUB_TOKEN because use of pr-comments
+          # use GITHUB_TOKEN to allow pull-request comments
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           message: true
