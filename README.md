@@ -1,66 +1,65 @@
 # Prettier-Fix
 
-With the release of [Super-Linter](https://github.com/super-linter/super-linter) 7.0.0, [Prettier](https://prettier.io/) has become the standard for many file formats, ensuring consistent code styling across your projects. Embrace this change and keep your codebase looking sharp by integrating Prettier directly into your workflow. While you can still rely on your favorite IDE to apply Prettier's formatting, why not automate the process with this GitHub Action using vanilla Prettier?
+Prettier-Fix is a GitHub Action that runs [Prettier](https://prettier.io/), commits formatting fixes, and pushes them to GitHub. Run it before [Super-Linter](https://github.com/super-linter/super-linter) so formatting fixes are applied before linting.
 
 <p align="center">
-  <img src=".github/images/social-preview.png" width="128" alt="accessibility text">
+  <img src=".github/images/social-preview.png" width="128" alt="Prettier-Fix gear logo">
 </p>
 
 ## Features
 
-- **Automatic Fixes:** Automatically formats code using Prettier.
-- **Flexible Committing:** Creates a new branch (prefixed with `prettier/fix`) if changes are required, making it easy to review and merge. Or you can set the input parameter `commit-changes: true` to commit to the current branch. (Recommendation: start with committing to another branch and review in order to avoid surprises. Then commit to the same branch for incremental changes.)
-- **Configurable:** Allows for customizable commit messages via the `commit-message` input.
-- Provides the branch name as an output for downstream workflows.
-- Issues warnings for manual changes needed in `.github/workflows` files.
+- **Automatic formatting.** Apply Prettier fixes in CI so contributors spend less time on formatting during code review.
+- **Review fixes or push directly.** By default, the action pushes fixes to a new `prettier/fix-*` branch for review. Start there, then set `commit-changes: true` to push routine formatting fixes to the current branch.
+- **Custom commit messages.** Optionally, set `commit-message` to match your repository’s commit conventions.
+- **Downstream automation.** Pass `branch-name` and `changed-files` to later actions to automate tasks such as opening a pull request or running checks on the changed files.
+- **Workflow-file warnings.** When Prettier changes a `.yml` file in `.github/workflows/`, the action shows the diff so you can apply the fix manually.
 
-## How to Use It
+## Usage
 
-To automate Prettier, simply add [the provided YAML configuration](.github/workflows/prettier-fix.yml) to your repository.
+To automate Prettier, simply add a variation of [the provided YAML configuration](.github/workflows/prettier-fix.yml) to your repository.
 
-By default, if necessary, a new branch with a name starting with `prettier/fix` will be created, making it easy to review and merge fixes into your main branch.
+You can set `commit-changes: true` under `with:` on the Prettier-Fix step to push fixes to the current branch. When fixes are pushed to a separate branch, use the commit link in the workflow run to review them, then open a pull request or delete the branch.
 
-Note: This action is non-blocking, so the status remains green even when changes are proposed via a new branch.
-A notice message is displayed, and it is then up to you to either create a pull request to merge the changes or delete the branch.
-
-### Permissions
-
-This action requires the following permissions:
-
-```yaml
-permissions:
-  contents: write
+```mermaid
+flowchart TD
+    accTitle: Where Prettier-Fix pushes changes
+    accDescr: When there are changes to commit, the action pushes to the current branch if commit-changes is true or to a new prettier/fix branch if false. With no changes to commit, the action finishes successfully with both outputs empty.
+    A["Run Prettier"] --> B{"Changes to commit?"}
+    B -->|No| C["Finish without committing or pushing"]
+    B -->|Yes| D{"commit-changes"}
+    D -->|true| E["Push fixes to the current branch"]
+    D -->|false · default| F["Push fixes to a new prettier/fix-* branch"]
 ```
+
+Note that this action is non-blocking, so the status remains green even when changes are proposed via a new branch.
+A notice message is displayed, and it is then up to you to either create a pull request to merge the changes or delete the branch.
 
 ### Inputs (all optional)
 
-| Input                  | Description                                                                    | Type    | Default                                                 |
-| ---------------------- | ------------------------------------------------------------------------------ | ------- | ------------------------------------------------------- |
-| `commit-changes`       | If `true`, commits changes to the current branch instead of creating a new one | Boolean | `false`                                                 |
-| `commit-message`       | Commit message for the changes                                                 | String  | `"chore(prettier): apply Prettier fixes automatically"` |
-| `debug`                | Enable extra debug output (list of branches).                                  | Boolean | `false`                                                 |
-| `node-version`         | Node.js version to use                                                         | String  | `"24"`                                                  |
-| `prettier-config-path` | Optional path to a custom Prettier config file                                 | String  | `""`                                                    |
-| `skip-package-setup`   | If `true`, skips `npm init` and dependency installation steps                  | Boolean | `false`                                                 |
+| Input                  | Description                                                              | Type    | Default                                                 |
+| ---------------------- | ------------------------------------------------------------------------ | ------- | ------------------------------------------------------- |
+| `commit-changes`       | Push fixes to the current branch when `true`.                            | Boolean | `false`                                                 |
+| `commit-message`       | Base commit message. The action appends a timestamp.                     | String  | `"chore(prettier): apply Prettier fixes automatically"` |
+| `debug`                | Log details about branches, refs, the working tree, and changed files.   | Boolean | `false`                                                 |
+| `node-version`         | Node.js version to use.                                                  | String  | `"24"`                                                  |
+| `prettier-config-path` | Path to a custom Prettier configuration file.                            | String  | `""`                                                    |
+| `skip-package-setup`   | Skip `npm init` project initialization and dependency setup when `true`. | Boolean | `false`                                                 |
 
-Note: it would be possible to use `git-user-name` and `git-user-email` as inputs to set-up the info about the author of the commits, but for clarity [actions/checkout](https://github.com/actions/checkout?tab=readme-ov-file#push-a-commit-using-the-built-in-token) recommends
-
-```bash
-  git config user.name "github-actions[bot]"
-  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-```
-
-Btw: GitHub displays the author's name according to a known email.
+Even with `skip-package-setup: true`, the action attempts to install Prettier if `npx prettier -v` fails. Commits use the `github-actions[bot]` identity.
 
 ### Outputs
 
-| Output          | Description                                       |
-| --------------- | ------------------------------------------------- |
-| `branch-name`   | The name of the branch created/used               |
-| `changed-files` | Comma-separated list of files changed by Prettier |
+| Output          | Description                                                         |
+| --------------- | ------------------------------------------------------------------- |
+| `branch-name`   | Branch (new/current) where the action pushed the formatting commit. |
+| `changed-files` | Comma-separated list of files included in the commit.               |
 
-## Important Note for Workflow YAMLs
+Both outputs are empty when there are no changes to commit.
 
-If the changes involve files within the `.github/workflows/` directory, these cannot be done automatically and need to be updated manually.
-So, it also checks for any changes made to the `.github/workflows` directory and issues a warning if changes are detected, advising you to manually review and fix these to avoid conflicts with Super-Linter.
-After making the necessary adjustments, simply create a pull request to finalize the changes and keep your repository in top shape.
+Set `id: prettier-fix` on the step that calls the action. Later steps in the same job can read `${{ steps.prettier-fix.outputs.branch-name }}` and `${{ steps.prettier-fix.outputs.changed-files }}`.
+
+## Workflow files
+
+Prettier-Fix excludes `.github/workflows/` from its commits because the [built-in `GITHUB_TOKEN`](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions) lacks the [`Workflows` write permission](https://docs.github.com/en/rest/repos/contents#create-or-update-file-contents) needed to update workflow files.
+
+If Prettier changes a `.yml` file directly in that directory, the action logs a warning and shows the diff. Review and apply those changes manually.

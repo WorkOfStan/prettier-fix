@@ -38,12 +38,10 @@ jobs:
           persist-credentials: false
       - uses: commit-check/commit-check-action@v2
         env:
-          # use GITHUB_TOKEN because use of pr-comments
+          # use GITHUB_TOKEN to allow pull-request comments
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           message: true
-          # to accept dependabot/github_actions/*
-          # branch: false # todo might not be necessary as "dependabot[bot]" author is ignored
           author-name: true
           author-email: true
           job-summary: true
@@ -51,6 +49,9 @@ jobs:
 
   super-linter:
     needs: commit-check
-    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.11
+    uses: WorkOfStan/seablast-actions/.github/workflows/linter.yml@v0.2.13
+    permissions:
+      contents: read
+      statuses: write
     with:
       runs-on: "ubuntu-latest"
