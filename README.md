@@ -36,23 +36,23 @@ A notice message is displayed, and it is then up to you to either create a pull 
 
 ### Inputs (all optional)
 
-| Input                  | Description                                                            | Type    | Default                                                 |
-| ---------------------- | ---------------------------------------------------------------------- | ------- | ------------------------------------------------------- |
-| `commit-changes`       | Push fixes to the current branch when `true`.                          | Boolean | `false`                                                 |
-| `commit-message`       | Base commit message. The action appends a timestamp.                   | String  | `"chore(prettier): apply Prettier fixes automatically"` |
-| `debug`                | Log details about branches, refs, the working tree, and changed files. | Boolean | `false`                                                 |
-| `node-version`         | Node.js version to use.                                                | String  | `"24"`                                                  |
-| `prettier-config-path` | Path to a custom Prettier configuration file.                          | String  | `""`                                                    |
-| `skip-package-setup`   | Skip `npm init` project initialization and dependency setup when `true`.          | Boolean | `false`                                                 |
+| Input                  | Description                                                              | Type    | Default                                                 |
+| ---------------------- | ------------------------------------------------------------------------ | ------- | ------------------------------------------------------- |
+| `commit-changes`       | Push fixes to the current branch when `true`.                            | Boolean | `false`                                                 |
+| `commit-message`       | Base commit message. The action appends a timestamp.                     | String  | `"chore(prettier): apply Prettier fixes automatically"` |
+| `debug`                | Log details about branches, refs, the working tree, and changed files.   | Boolean | `false`                                                 |
+| `node-version`         | Node.js version to use.                                                  | String  | `"24"`                                                  |
+| `prettier-config-path` | Path to a custom Prettier configuration file.                            | String  | `""`                                                    |
+| `skip-package-setup`   | Skip `npm init` project initialization and dependency setup when `true`. | Boolean | `false`                                                 |
 
 Even with `skip-package-setup: true`, the action attempts to install Prettier if `npx prettier -v` fails. Commits use the `github-actions[bot]` identity.
 
 ### Outputs
 
-| Output          | Description                                           |
-| --------------- | ----------------------------------------------------- |
+| Output          | Description                                                         |
+| --------------- | ------------------------------------------------------------------- |
 | `branch-name`   | Branch (new/current) where the action pushed the formatting commit. |
-| `changed-files` | Comma-separated list of files included in the commit. |
+| `changed-files` | Comma-separated list of files included in the commit.               |
 
 Both outputs are empty when there are no changes to commit.
 
