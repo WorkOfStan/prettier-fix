@@ -16,6 +16,9 @@ on:
     # Run the workflow at 6:30 AM UTC on the 18th of every month
     - cron: "30 6 18 * *"
 
+permissions:
+  contents: read
+
 jobs:
   commit-check:
     runs-on: ubuntu-latest
